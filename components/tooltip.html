@@ -120,8 +120,8 @@
       border-right-color: var(--color-text);
     }
 
-    /* Color variants — [data-tooltip] added to match position-rule specificity (0,2,1)
-       so cascade order (later in file) wins without !important */
+    /* Color variants — [data-tooltip] added to raise specificity to (0,2,1),
+       matching the position rules; cascade order (later in file) then wins. */
     [data-tooltip][data-tooltip-color="primary"]::before   { background: var(--color-primary); }
     [data-tooltip][data-tooltip-color="primary"]::after    { border-top-color: var(--color-primary); }
     [data-tooltip][data-tooltip-color="success"]::before   { background: var(--color-success-fg); }

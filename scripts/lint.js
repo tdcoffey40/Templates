@@ -124,12 +124,16 @@ function ruleHardcodedColors(file, lines, out) {
  * Excludes the prefers-reduced-motion reset block (which legitimately uses it).
  */
 function ruleNoImportant(file, lines, out) {
-  lines.forEach((raw, i) => {
-    if (isIgnored(raw)) return;
-    // Strip CSS/HTML comments before checking so the word !important
-    // in an explanatory comment does not trigger a false positive.
-    const stripped = raw.replace(/\/\*[\s\S]*?\*\//g, '').replace(/<!--[\s\S]*?-->/g, '');
-    if (stripped.includes('!important') && !stripped.includes('prefers-reduced-motion')) {
+  // Pre-strip block comments from the full content so that occurrences of
+  // "!important" inside a comment (including multi-line comments) are ignored.
+  const full = lines.join('\n');
+  const stripped = full
+    .replace(/\/\*[\s\S]*?\*\//g, ' ')  // /* block comments */
+    .replace(/<!--[\s\S]*?-->/g, ' ')   // <!-- HTML comments -->
+    .split('\n');
+  stripped.forEach((raw, i) => {
+    if (isIgnored(lines[i])) return;
+    if (raw.includes('!important') && !raw.includes('prefers-reduced-motion')) {
       out.push(warn(file, i + 1, 'no-important',
         '!important — refactor specificity instead'));
     }
