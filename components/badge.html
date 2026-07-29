@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Badge — Design System</title>
+  <link rel="stylesheet" href="../styles/variables.css">
+  <link rel="stylesheet" href="../styles/framework.css">
+  <script>(function(){try{var t=localStorage.getItem('ds-theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}}());</script>
+  <style>
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      padding: 2px var(--space-2);
+      border-radius: var(--radius-full);
+      font-size: var(--text-xs);
+      font-weight: var(--font-semibold);
+      white-space: nowrap;
+      line-height: 1.5;
+    }
+
+    /* Variants */
+    .badge-primary   { background: var(--color-primary-subtle); color: var(--color-primary); }
+    .badge-secondary { background: var(--color-secondary-subtle); color: var(--color-secondary); }
+    .badge-success   { background: var(--color-success-subtle); color: var(--color-success-fg); }
+    .badge-warning   { background: var(--color-warning-subtle); color: var(--color-warning-fg); }
+    .badge-error     { background: var(--color-error-subtle); color: var(--color-error-fg); }
+    .badge-info      { background: var(--color-info-subtle); color: var(--color-info-fg); }
+    .badge-neutral   { background: var(--color-surface-overlay); color: var(--color-text-muted); }
+
+    /* Solid variants */
+    .badge-solid-primary   { background: var(--color-primary); color: #fff; }
+    .badge-solid-secondary { background: var(--color-secondary); color: #fff; }
+    .badge-solid-success   { background: var(--color-success); color: #fff; }
+    .badge-solid-warning   { background: var(--color-warning); color: #fff; }
+    .badge-solid-error     { background: var(--color-error); color: #fff; }
+
+    /* Outlined */
+    .badge-outline {
+      background: transparent;
+      border: 1px solid var(--color-border-strong);
+      color: var(--color-text-muted);
+    }
+    .badge-outline-primary {
+      background: transparent;
+      border: 1px solid var(--color-primary);
+      color: var(--color-primary);
+    }
+    .badge-outline-success {
+      background: transparent;
+      border: 1px solid var(--color-success);
+      color: var(--color-success-fg);
+    }
+    .badge-outline-error {
+      background: transparent;
+      border: 1px solid var(--color-error);
+      color: var(--color-error-fg);
+    }
+
+    /* Sizes */
+    .badge-sm { font-size: 10px; padding: 1px var(--space-1); }
+    .badge-lg { font-size: var(--text-sm); padding: var(--space-1) var(--space-3); }
+
+    /* Dot indicator */
+    .badge-dot::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      flex-shrink: 0;
+    }
+
+    /* Square */
+    .badge-square { border-radius: var(--radius-base); }
+
+    /* Count badge (notification pill) */
+    .badge-count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 20px;
+      height: 20px;
+      padding: 0 var(--space-1);
+      background: var(--color-error);
+      color: #fff;
+      border-radius: var(--radius-full);
+      font-size: 11px;
+      font-weight: var(--font-bold);
+    }
+
+    .badge-group { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="page-header">
+    <h1 class="page-title">Badge</h1>
+    <p class="page-description">Status indicators, labels, and count badges in multiple variants and styles. Pure CSS.</p>
+  </div>
+
+  <section class="section">
+    <h2 class="section-title">Subtle (Default)</h2>
+    <div class="badge-group">
+      <span class="badge badge-primary">Primary</span>
+      <span class="badge badge-secondary">Secondary</span>
+      <span class="badge badge-success">Success</span>
+      <span class="badge badge-warning">Warning</span>
+      <span class="badge badge-error">Error</span>
+      <span class="badge badge-info">Info</span>
+      <span class="badge badge-neutral">Neutral</span>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Solid</h2>
+    <div class="badge-group">
+      <span class="badge badge-solid-primary">Primary</span>
+      <span class="badge badge-solid-secondary">Secondary</span>
+      <span class="badge badge-solid-success">Success</span>
+      <span class="badge badge-solid-warning">Warning</span>
+      <span class="badge badge-solid-error">Error</span>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Outlined</h2>
+    <div class="badge-group">
+      <span class="badge badge-outline">Default</span>
+      <span class="badge badge-outline-primary">Primary</span>
+      <span class="badge badge-outline-success">Success</span>
+      <span class="badge badge-outline-error">Error</span>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">With Dot Indicator</h2>
+    <div class="badge-group">
+      <span class="badge badge-success badge-dot">Online</span>
+      <span class="badge badge-warning badge-dot">Away</span>
+      <span class="badge badge-error badge-dot">Offline</span>
+      <span class="badge badge-neutral badge-dot">Idle</span>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Sizes</h2>
+    <div class="badge-group" style="align-items:center">
+      <span class="badge badge-primary badge-sm">Small</span>
+      <span class="badge badge-primary">Default</span>
+      <span class="badge badge-primary badge-lg">Large</span>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Square</h2>
+    <div class="badge-group">
+      <span class="badge badge-primary badge-square">Beta</span>
+      <span class="badge badge-success badge-square">Stable</span>
+      <span class="badge badge-warning badge-square">Deprecated</span>
+      <span class="badge badge-error badge-square">Breaking</span>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Count / Notification</h2>
+    <div class="badge-group">
+      <span class="badge-count">5</span>
+      <span class="badge-count">12</span>
+      <span class="badge-count">99+</span>
+      <span class="badge-count" style="background:var(--color-primary)">3</span>
+      <span class="badge-count" style="background:var(--color-success)">✓</span>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Status Labels (with Icons)</h2>
+    <div class="badge-group">
+      <span class="badge badge-success badge-dot">Published</span>
+      <span class="badge badge-warning badge-dot">Draft</span>
+      <span class="badge badge-info">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Active
+      </span>
+      <span class="badge badge-neutral">Archived</span>
+      <span class="badge badge-error">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        Rejected
+      </span>
+    </div>
+  </section>
+</div>
+<script>window.addEventListener('message',function(e){if(e.data&&e.data.type==='theme')document.documentElement.dataset.theme=e.data.value;});</script>
+</body>
+</html>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dropdown — Design System</title>
+  <link rel="stylesheet" href="../styles/variables.css">
+  <link rel="stylesheet" href="../styles/framework.css">
+  <script>(function(){try{var t=localStorage.getItem('ds-theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}}());</script>
+  <style>
+    /* Dropdown using <details> — CSS only */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    /* Hide default marker */
+    .dropdown summary { list-style: none; }
+    .dropdown summary::-webkit-details-marker { display: none; }
+
+    /* Trigger button */
+    .dropdown-trigger {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: 0 var(--space-4);
+      height: var(--size-md);
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--color-border-strong);
+      background: var(--color-surface);
+      color: var(--color-text);
+      cursor: pointer;
+      user-select: none;
+      font-family: inherit;
+      transition: background 150ms, border-color 150ms;
+    }
+    .dropdown-trigger:hover { background: var(--color-surface-overlay); }
+    details[open] .dropdown-trigger {
+      background: var(--color-surface-overlay);
+      border-color: var(--color-border-strong);
+    }
+
+    .caret {
+      transition: transform var(--dur-200) ease;
+      color: var(--color-text-muted);
+    }
+    details[open] .caret { transform: rotate(180deg); }
+
+    /* Menu */
+    .dropdown-menu {
+      position: absolute;
+      top: calc(100% + var(--space-1));
+      left: 0;
+      min-width: 180px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-lg);
+      padding: var(--space-1);
+      z-index: var(--z-dropdown);
+      animation: dropdown-in var(--dur-150) var(--ease-out);
+    }
+    .dropdown-menu.right { left: auto; right: 0; }
+
+    @keyframes dropdown-in {
+      from { opacity: 0; transform: translateY(-6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes dropdown-out {
+      from { opacity: 1; transform: translateY(0); }
+      to   { opacity: 0; transform: translateY(-4px); }
+    }
+    .dropdown-menu.closing {
+      animation: dropdown-out var(--dur-150) var(--ease-in) forwards;
+      pointer-events: none;
+    }
+
+    .dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-2) var(--space-3);
+      border-radius: var(--radius-lg);
+      font-size: var(--text-sm);
+      color: var(--color-text);
+      cursor: pointer;
+      text-decoration: none;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+      font-family: inherit;
+      transition: background 100ms;
+    }
+    .dropdown-item:hover { background: var(--color-surface-overlay); }
+    .dropdown-item.danger { color: var(--color-error); }
+    .dropdown-item.danger:hover { background: var(--color-error-subtle); }
+    .dropdown-item:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .dropdown-divider {
+      height: 1px;
+      background: var(--color-border);
+      margin: var(--space-1);
+    }
+
+    .dropdown-header {
+      padding: var(--space-2) var(--space-3) var(--space-1);
+      font-size: var(--text-xs);
+      font-weight: var(--font-semibold);
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-wider);
+    }
+
+    .item-icon { color: var(--color-text-muted); flex-shrink: 0; }
+    .item-shortcut { margin-left: auto; font-size: var(--text-xs); color: var(--color-text-subtle); font-family: var(--font-mono); }
+
+    /* Variant: Primary trigger */
+    .trigger-primary {
+      background: var(--color-primary);
+      color: #fff;
+      border-color: var(--color-primary);
+    }
+    .trigger-primary:hover { background: var(--color-primary-hover); border-color: var(--color-primary-hover); }
+    details[open] .trigger-primary { background: var(--color-primary-hover); }
+    .trigger-primary .caret { color: rgba(255,255,255,0.7); }
+
+    .demo-area {
+      padding: var(--space-8);
+      background: var(--color-surface-raised);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-2xl);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: var(--space-6);
+      min-height: 220px;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="page-header">
+    <h1 class="page-title">Dropdown</h1>
+    <p class="page-description">Dropdown menus using the native <code>&lt;details&gt;</code>/<code>&lt;summary&gt;</code> element — fully CSS-driven with open/close animation. Click outside closes it natively.</p>
+  </div>
+
+  <section class="section">
+    <h2 class="section-title">Basic Menu</h2>
+    <div class="demo-area">
+      <details class="dropdown">
+        <summary class="dropdown-trigger">
+          Options
+          <svg class="caret" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <div class="dropdown-menu">
+          <button class="dropdown-item">
+            <svg class="item-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            Edit
+            <span class="item-shortcut">⌘E</span>
+          </button>
+          <button class="dropdown-item">
+            <svg class="item-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Duplicate
+            <span class="item-shortcut">⌘D</span>
+          </button>
+          <button class="dropdown-item">
+            <svg class="item-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            Share
+          </button>
+          <div class="dropdown-divider"></div>
+          <button class="dropdown-item danger">
+            <svg class="item-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/></svg>
+            Delete
+            <span class="item-shortcut">⌫</span>
+          </button>
+        </div>
+      </details>
+
+      <!-- With section headers -->
+      <details class="dropdown">
+        <summary class="dropdown-trigger trigger-primary">
+          Account
+          <svg class="caret" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <div class="dropdown-menu">
+          <div class="dropdown-header">Account</div>
+          <button class="dropdown-item">
+            <svg class="item-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Profile
+          </button>
+          <button class="dropdown-item">
+            <svg class="item-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            Settings
+          </button>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-header">Billing</div>
+          <button class="dropdown-item">Plan & Usage</button>
+          <button class="dropdown-item">Invoices</button>
+          <div class="dropdown-divider"></div>
+          <button class="dropdown-item danger">Sign out</button>
+        </div>
+      </details>
+
+      <!-- Icon only trigger, right aligned menu -->
+      <details class="dropdown">
+        <summary class="dropdown-trigger" style="padding:0;width:40px;justify-content:center;" aria-label="More actions">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+        </summary>
+        <div class="dropdown-menu right">
+          <button class="dropdown-item">View details</button>
+          <button class="dropdown-item">Add to favorites</button>
+          <button class="dropdown-item">Move to folder</button>
+          <div class="dropdown-divider"></div>
+          <button class="dropdown-item danger">Archive</button>
+        </div>
+      </details>
+    </div>
+  </section>
+</div>
+<script>
+  window.addEventListener('message',function(e){if(e.data&&e.data.type==='theme')document.documentElement.dataset.theme=e.data.value;});
+
+  // Manage open/close manually so the exit animation can play before the menu disappears.
+  // This also covers outside-click (which <details> would normally handle natively but
+  // can't animate since the toggle event is not cancellable).
+  document.querySelectorAll('.dropdown').forEach(function(dd) {
+    var summary = dd.querySelector('summary');
+    var menu    = dd.querySelector('.dropdown-menu');
+    if (!summary || !menu) return;
+
+    function closeDropdown() {
+      if (!dd.open) return;
+      menu.classList.add('closing');
+      menu.addEventListener('animationend', function() {
+        menu.classList.remove('closing');
+        dd.removeAttribute('open');
+      }, { once: true });
+    }
+
+    summary.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (dd.open) { closeDropdown(); } else { dd.setAttribute('open', ''); }
+    });
+
+    document.addEventListener('click', function(e) {
+      if (dd.open && !dd.contains(e.target)) closeDropdown();
+    });
+  });
+</script>
+</body>
+</html>

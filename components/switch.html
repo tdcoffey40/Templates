@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Switch — Design System</title>
+  <link rel="stylesheet" href="../styles/variables.css">
+  <link rel="stylesheet" href="../styles/framework.css">
+  <script>(function(){try{var t=localStorage.getItem('ds-theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}}());</script>
+  <style>
+    /* Switch component — pure CSS, no JavaScript */
+    .switch-label {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-3);
+      cursor: pointer;
+      user-select: none;
+    }
+    .switch-label.disabled { opacity: 0.45; cursor: not-allowed; }
+    .switch-label.reverse  { flex-direction: row-reverse; }
+
+    .switch-input { position: absolute; opacity: 0; width: 0; height: 0; }
+
+    .switch-track {
+      position: relative;
+      width: 44px;
+      height: 24px;
+      background: var(--color-border-strong);
+      border-radius: var(--radius-full);
+      transition: background var(--dur-200) var(--ease-in-out);
+      flex-shrink: 0;
+    }
+    .switch-input:checked + .switch-track { background: var(--color-primary); }
+    .switch-input:disabled + .switch-track { cursor: not-allowed; }
+
+    .switch-thumb {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 20px;
+      height: 20px;
+      background: #ffffff;
+      border-radius: 50%;
+      box-shadow: var(--shadow-xs);
+      transition: transform var(--dur-200) var(--ease-in-out);
+    }
+    .switch-input:checked + .switch-track .switch-thumb {
+      transform: translateX(20px);
+    }
+
+    .switch-input:focus-visible + .switch-track {
+      outline: 2px solid var(--color-border-focus);
+      outline-offset: 2px;
+    }
+
+    .switch-text { font-size: var(--text-sm); color: var(--color-text); line-height: 1.4; }
+    .switch-hint { font-size: var(--text-xs); color: var(--color-text-muted); margin-top: 2px; }
+
+    /* Sizes */
+    .switch-sm .switch-track  { width: 32px; height: 18px; }
+    .switch-sm .switch-thumb  { width: 14px; height: 14px; }
+    .switch-sm .switch-input:checked + .switch-track .switch-thumb { transform: translateX(14px); }
+    .switch-sm .switch-text   { font-size: var(--text-xs); }
+
+    .switch-lg .switch-track  { width: 56px; height: 30px; }
+    .switch-lg .switch-thumb  { width: 26px; height: 26px; }
+    .switch-lg .switch-input:checked + .switch-track .switch-thumb { transform: translateX(26px); }
+
+    /* Color variants */
+    .switch-success .switch-input:checked + .switch-track  { background: var(--color-success); }
+    .switch-warning .switch-input:checked + .switch-track  { background: var(--color-warning); }
+    .switch-danger  .switch-input:checked + .switch-track  { background: var(--color-error); }
+    .switch-secondary .switch-input:checked + .switch-track { background: var(--color-secondary); }
+
+    .switch-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+    }
+    .switch-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-4) var(--space-5);
+      border-bottom: 1px solid var(--color-border);
+      background: var(--color-surface);
+    }
+    .switch-row:last-child { border-bottom: none; }
+    .switch-row-info h4 { font-size: var(--text-sm); font-weight: var(--font-medium); color: var(--color-text); }
+    .switch-row-info p  { font-size: var(--text-xs); color: var(--color-text-muted); margin-top: 2px; }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="page-header">
+    <h1 class="page-title">Switch</h1>
+    <p class="page-description">Toggle switch built entirely with CSS using a hidden checkbox input. No JavaScript required.</p>
+  </div>
+
+  <section class="section">
+    <h2 class="section-title">Basic</h2>
+    <div style="display:flex;flex-direction:column;gap:var(--space-3)">
+      <label class="switch-label">
+        <input type="checkbox" class="switch-input">
+        <span class="switch-track"><span class="switch-thumb"></span></span>
+        <span class="switch-text">Off state</span>
+      </label>
+      <label class="switch-label">
+        <input type="checkbox" class="switch-input" checked>
+        <span class="switch-track"><span class="switch-thumb"></span></span>
+        <span class="switch-text">On state</span>
+      </label>
+      <label class="switch-label">
+        <input type="checkbox" class="switch-input" checked>
+        <span class="switch-track"><span class="switch-thumb"></span></span>
+        <div>
+          <div class="switch-text">Email notifications</div>
+          <div class="switch-hint">Receive updates and alerts via email</div>
+        </div>
+      </label>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Sizes</h2>
+    <div style="display:flex;align-items:center;gap:var(--space-6)">
+      <label class="switch-label switch-sm">
+        <input type="checkbox" class="switch-input" checked>
+        <span class="switch-track"><span class="switch-thumb"></span></span>
+        <span class="switch-text">Small</span>
+      </label>
+      <label class="switch-label">
+        <input type="checkbox" class="switch-input" checked>
+        <span class="switch-track"><span class="switch-thumb"></span></span>
+        <span class="switch-text">Default</span>
+      </label>
+      <label class="switch-label switch-lg">
+        <input type="checkbox" class="switch-input" checked>
+        <span class="switch-track"><span class="switch-thumb"></span></span>
+        <span class="switch-text">Large</span>
+      </label>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Color Variants</h2>
+    <div style="display:flex;flex-wrap:wrap;gap:var(--space-6)">
+      <label class="switch-label">
+        <input type="checkbox" class="switch-input" checked>
+        <span class="switch-track"><span class="switch-thumb"></span></span>
+        <span class="switch-text">Primary</span>
+      </label>
+      <label class="switch-label switch-secondary">
+        <input type="checkbox" class="switch-input" checked>
+        <span class="switch-track"><span class="switch-thumb"></span></span>
+        <span class="switch-text">Secondary</span>
+      </label>
+      <label class="switch-label switch-success">
+        <input type="checkbox" class="switch-input" checked>
+        <span class="switch-track"><span class="switch-thumb"></span></span>
+        <span class="switch-text">Success</span>
+      </label>
+      <label class="switch-label switch-warning">
+        <input type="checkbox" class="switch-input" checked>
+        <span class="switch-track"><span class="switch-thumb"></span></span>
+        <span class="switch-text">Warning</span>
+      </label>
+      <label class="switch-label switch-danger">
+        <input type="checkbox" class="switch-input" checked>
+        <span class="switch-track"><span class="switch-thumb"></span></span>
+        <span class="switch-text">Danger</span>
+      </label>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Disabled</h2>
+    <div style="display:flex;gap:var(--space-6)">
+      <label class="switch-label disabled">
+        <input type="checkbox" class="switch-input" disabled>
+        <span class="switch-track"><span class="switch-thumb"></span></span>
+        <span class="switch-text">Disabled off</span>
+      </label>
+      <label class="switch-label disabled">
+        <input type="checkbox" class="switch-input" checked disabled>
+        <span class="switch-track"><span class="switch-thumb"></span></span>
+        <span class="switch-text">Disabled on</span>
+      </label>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Settings Panel</h2>
+    <div class="switch-list" style="max-width:460px">
+      <div class="switch-row">
+        <div class="switch-row-info">
+          <h4>Email notifications</h4>
+          <p>Daily summaries and account activity</p>
+        </div>
+        <label class="switch-label">
+          <input type="checkbox" class="switch-input" checked>
+          <span class="switch-track"><span class="switch-thumb"></span></span>
+        </label>
+      </div>
+      <div class="switch-row">
+        <div class="switch-row-info">
+          <h4>Push notifications</h4>
+          <p>Alerts on desktop and mobile</p>
+        </div>
+        <label class="switch-label">
+          <input type="checkbox" class="switch-input">
+          <span class="switch-track"><span class="switch-thumb"></span></span>
+        </label>
+      </div>
+      <div class="switch-row">
+        <div class="switch-row-info">
+          <h4>Two-factor authentication</h4>
+          <p>Extra layer of security for your account</p>
+        </div>
+        <label class="switch-label">
+          <input type="checkbox" class="switch-input" checked>
+          <span class="switch-track"><span class="switch-thumb"></span></span>
+        </label>
+      </div>
+      <div class="switch-row">
+        <div class="switch-row-info">
+          <h4>Beta features</h4>
+          <p>Access to unreleased experimental features</p>
+        </div>
+        <label class="switch-label">
+          <input type="checkbox" class="switch-input">
+          <span class="switch-track"><span class="switch-thumb"></span></span>
+        </label>
+      </div>
+    </div>
+  </section>
+</div>
+<script>window.addEventListener('message',function(e){if(e.data&&e.data.type==='theme')document.documentElement.dataset.theme=e.data.value;});</script>
+</body>
+</html>

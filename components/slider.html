@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slider — Design System</title>
+  <link rel="stylesheet" href="../styles/variables.css">
+  <link rel="stylesheet" href="../styles/framework.css">
+  <script>(function(){try{var t=localStorage.getItem('ds-theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}}());</script>
+  <style>
+    .slider-field { display: flex; flex-direction: column; gap: var(--space-2); }
+    .slider-header { display: flex; justify-content: space-between; align-items: center; }
+    .slider-label { font-size: var(--text-sm); font-weight: var(--font-medium); color: var(--color-text); }
+    .slider-value {
+      font-size: var(--text-sm);
+      font-weight: var(--font-semibold);
+      color: var(--color-primary);
+      min-width: 40px;
+      text-align: right;
+      font-family: var(--font-mono);
+    }
+
+    /* Range input */
+    .slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 6px;
+      background: var(--color-surface-overlay);
+      border-radius: var(--radius-full);
+      outline: none;
+      cursor: pointer;
+    }
+    .slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      background: var(--color-surface);
+      border: 2px solid var(--color-primary);
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: transform 150ms ease, box-shadow 150ms ease;
+    }
+    .slider::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      background: var(--color-surface);
+      border: 2px solid var(--color-primary);
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: transform 150ms ease, box-shadow 150ms ease;
+    }
+    .slider:hover::-webkit-slider-thumb {
+      transform: scale(1.15);
+      box-shadow: 0 0 0 4px rgb(99 102 241 / 0.15);
+    }
+    .slider:hover::-moz-range-thumb {
+      transform: scale(1.15);
+      box-shadow: 0 0 0 4px rgb(99 102 241 / 0.15);
+    }
+    .slider:focus::-webkit-slider-thumb { box-shadow: 0 0 0 4px rgb(99 102 241 / 0.25); }
+    .slider:disabled { opacity: 0.45; cursor: not-allowed; }
+    .slider:disabled::-webkit-slider-thumb { cursor: not-allowed; }
+
+    /* Colored track using gradient */
+    .slider-primary {
+      background: linear-gradient(to right, var(--color-primary) var(--pct, 50%), var(--color-surface-overlay) var(--pct, 50%));
+    }
+    .slider-success {
+      background: linear-gradient(to right, var(--color-success) var(--pct, 50%), var(--color-surface-overlay) var(--pct, 50%));
+    }
+    .slider-success::-webkit-slider-thumb { border-color: var(--color-success); }
+    .slider-success::-moz-range-thumb     { border-color: var(--color-success); }
+    .slider-warning {
+      background: linear-gradient(to right, var(--color-warning) var(--pct, 50%), var(--color-surface-overlay) var(--pct, 50%));
+    }
+    .slider-warning::-webkit-slider-thumb { border-color: var(--color-warning); }
+    .slider-warning::-moz-range-thumb     { border-color: var(--color-warning); }
+
+    /* Tick marks */
+    .slider-ticks {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 10px;
+    }
+    .slider-ticks span {
+      font-size: var(--text-xs);
+      color: var(--color-text-subtle);
+    }
+
+    /* Range between two thumbs (visual demo only) */
+    .range-display {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+    }
+    .range-val { font-weight: var(--font-semibold); color: var(--color-primary); font-family: var(--font-mono); }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="page-header">
+    <h1 class="page-title">Slider</h1>
+    <p class="page-description">Range slider inputs styled with CSS custom properties. Values update via minimal inline JavaScript.</p>
+  </div>
+
+  <section class="section">
+    <h2 class="section-title">Basic</h2>
+    <div style="max-width:480px;display:flex;flex-direction:column;gap:var(--space-6)">
+      <div class="slider-field">
+        <div class="slider-header">
+          <span class="slider-label">Volume</span>
+          <span class="slider-value" id="vol-val">70</span>
+        </div>
+        <input class="slider slider-primary" id="vol" type="range" min="0" max="100" value="70"
+          oninput="document.getElementById('vol-val').textContent=this.value;this.style.setProperty('--pct',this.value+'%')">
+      </div>
+
+      <div class="slider-field">
+        <div class="slider-header">
+          <span class="slider-label">Brightness</span>
+          <span class="slider-value" id="bright-val">45</span>
+        </div>
+        <input class="slider slider-primary" id="bright" type="range" min="0" max="100" value="45"
+          style="--pct:45%"
+          oninput="document.getElementById('bright-val').textContent=this.value;this.style.setProperty('--pct',this.value+'%')">
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Color Variants</h2>
+    <div style="max-width:480px;display:flex;flex-direction:column;gap:var(--space-5)">
+      <div class="slider-field">
+        <div class="slider-header"><span class="slider-label">Primary</span></div>
+        <input class="slider slider-primary" type="range" min="0" max="100" value="60" style="--pct:60%"
+          oninput="this.style.setProperty('--pct',this.value+'%')">
+      </div>
+      <div class="slider-field">
+        <div class="slider-header"><span class="slider-label">Success</span></div>
+        <input class="slider slider-success" type="range" min="0" max="100" value="75" style="--pct:75%"
+          oninput="this.style.setProperty('--pct',this.value+'%')">
+      </div>
+      <div class="slider-field">
+        <div class="slider-header"><span class="slider-label">Warning</span></div>
+        <input class="slider slider-warning" type="range" min="0" max="100" value="30" style="--pct:30%"
+          oninput="this.style.setProperty('--pct',this.value+'%')">
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">With Tick Marks</h2>
+    <div style="max-width:480px">
+      <div class="slider-field">
+        <div class="slider-header">
+          <span class="slider-label">Quality</span>
+          <span class="slider-value" id="qual-val">3</span>
+        </div>
+        <input class="slider slider-primary" type="range" min="1" max="5" step="1" value="3" style="--pct:50%"
+          oninput="document.getElementById('qual-val').textContent=this.value;this.style.setProperty('--pct',((this.value-1)/4*100)+'%')">
+        <div class="slider-ticks">
+          <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Disabled</h2>
+    <div style="max-width:480px">
+      <input class="slider" type="range" min="0" max="100" value="40" disabled>
+    </div>
+  </section>
+</div>
+<script>
+  window.addEventListener('message',function(e){if(e.data&&e.data.type==='theme')document.documentElement.dataset.theme=e.data.value;});
+  // Set initial gradient values
+  document.querySelectorAll('.slider-primary,.slider-success,.slider-warning').forEach(function(s) {
+    if (!s.style.getPropertyValue('--pct')) {
+      var pct = ((s.value - s.min) / (s.max - s.min) * 100) + '%';
+      s.style.setProperty('--pct', pct);
+    }
+  });
+</script>
+</body>
+</html>

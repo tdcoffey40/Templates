@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tabs — Design System</title>
+  <link rel="stylesheet" href="../styles/variables.css">
+  <link rel="stylesheet" href="../styles/framework.css">
+  <script>(function(){try{var t=localStorage.getItem('ds-theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}}());</script>
+  <style>
+    /* ============================================================
+       Tabs — minimal JS for accessible switching
+       ============================================================ */
+    .tabs { margin-bottom: var(--space-6); }
+
+    /* ---- Underline style ---- */
+    .tabs-nav {
+      display: flex;
+      border-bottom: 1px solid var(--color-border);
+      gap: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .tabs-nav::-webkit-scrollbar { display: none; }
+
+    .tab {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-3) var(--space-4);
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+      color: var(--color-text-muted);
+      border: none;
+      background: none;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      white-space: nowrap;
+      font-family: inherit;
+      transition: color var(--dur-150), border-color var(--dur-150);
+    }
+    .tab:hover { color: var(--color-text); }
+    .tab[aria-selected="true"] {
+      color: var(--color-primary);
+      border-bottom-color: var(--color-primary);
+    }
+    .tab:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* Badge in tab */
+    .tab-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 5px;
+      background: var(--color-surface-overlay);
+      color: var(--color-text-muted);
+      border-radius: var(--radius-full);
+      font-size: 10px;
+      font-weight: var(--font-bold);
+    }
+    .tab[aria-selected="true"] .tab-badge {
+      background: var(--color-primary-subtle);
+      color: var(--color-primary);
+    }
+
+    /* Tab panels */
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; animation: tab-in var(--dur-150) var(--ease-out); }
+    @keyframes tab-in {
+      from { opacity: 0; transform: translateY(5px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ---- Pill style ---- */
+    .tabs-pills .tabs-nav {
+      border-bottom: none;
+      background: var(--color-surface-overlay);
+      border-radius: var(--radius-xl);
+      padding: var(--space-1);
+      gap: var(--space-1);
+      width: fit-content;
+    }
+    .tabs-pills .tab {
+      border-bottom: none;
+      border-radius: var(--radius-lg);
+      padding: var(--space-2) var(--space-4);
+      margin-bottom: 0;
+    }
+    .tabs-pills .tab[aria-selected="true"] {
+      background: var(--color-surface);
+      color: var(--color-text);
+      box-shadow: var(--shadow-xs);
+    }
+
+    /* ---- Boxed style ---- */
+    .tabs-boxed .tabs-nav {
+      gap: var(--space-1);
+      border-bottom: none;
+      margin-bottom: var(--space-4);
+    }
+    .tabs-boxed .tab {
+      border-bottom: none;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md) var(--radius-md) 0 0;
+      margin-bottom: 0;
+      background: var(--color-surface-raised);
+    }
+    .tabs-boxed .tab[aria-selected="true"] {
+      background: var(--color-surface);
+      border-bottom-color: var(--color-surface);
+      color: var(--color-primary);
+      z-index: 1;
+    }
+
+    /* ---- Vertical tabs ---- */
+    .tabs-vertical {
+      display: flex;
+      gap: var(--space-6);
+    }
+    .tabs-vertical .tabs-nav {
+      flex-direction: column;
+      border-bottom: none;
+      border-right: 1px solid var(--color-border);
+      min-width: 160px;
+      gap: var(--space-1);
+      padding-right: 0;
+    }
+    .tabs-vertical .tab {
+      border-bottom: none;
+      border-right: 2px solid transparent;
+      border-radius: var(--radius-md) 0 0 var(--radius-md);
+      margin-bottom: 0;
+      margin-right: -1px;
+      padding: var(--space-2) var(--space-4);
+    }
+    .tabs-vertical .tab[aria-selected="true"] {
+      border-right-color: var(--color-primary);
+      border-bottom: none;
+      color: var(--color-primary);
+      background: var(--color-primary-subtle);
+    }
+    .tabs-vertical .tab-panels { flex: 1; }
+
+    .tab-content-box {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-5);
+    }
+    .tab-content-box p { font-size: var(--text-sm); color: var(--color-text-muted); line-height: var(--leading-relaxed); }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="page-header">
+    <h1 class="page-title">Tabs</h1>
+    <p class="page-description">Tab navigation in underline, pill, boxed, and vertical styles. Minimal JavaScript for accessible panel switching.</p>
+  </div>
+
+  <section class="section">
+    <h2 class="section-title">Underline (Default)</h2>
+    <div class="tabs" data-tabs>
+      <div class="tabs-nav" role="tablist" aria-label="Account tabs">
+        <button class="tab" role="tab" aria-selected="true" aria-controls="tab1-overview">Overview</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="tab1-activity">
+          Activity
+          <span class="tab-badge">12</span>
+        </button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="tab1-settings">Settings</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="tab1-billing">Billing</button>
+        <button class="tab" role="tab" disabled>Integrations</button>
+      </div>
+      <div class="tab-panels" style="padding-top:var(--space-4)">
+        <div id="tab1-overview" class="tab-panel active" role="tabpanel">
+          <div class="tab-content-box">
+            <h3 style="font-size:var(--text-base);font-weight:var(--font-semibold);margin-bottom:var(--space-2)">Account Overview</h3>
+            <p>Your account is active and in good standing. You're currently on the Pro plan with 42 of 50 GB storage used.</p>
+          </div>
+        </div>
+        <div id="tab1-activity" class="tab-panel" role="tabpanel">
+          <div class="tab-content-box">
+            <h3 style="font-size:var(--text-base);font-weight:var(--font-semibold);margin-bottom:var(--space-2)">Recent Activity</h3>
+            <p>12 new events since your last visit. Files uploaded, comments added, and settings changed.</p>
+          </div>
+        </div>
+        <div id="tab1-settings" class="tab-panel" role="tabpanel">
+          <div class="tab-content-box">
+            <h3 style="font-size:var(--text-base);font-weight:var(--font-semibold);margin-bottom:var(--space-2)">Account Settings</h3>
+            <p>Manage your name, email, password, and notification preferences here.</p>
+          </div>
+        </div>
+        <div id="tab1-billing" class="tab-panel" role="tabpanel">
+          <div class="tab-content-box">
+            <h3 style="font-size:var(--text-base);font-weight:var(--font-semibold);margin-bottom:var(--space-2)">Billing & Plans</h3>
+            <p>Your next billing date is August 15, 2025. You can upgrade, downgrade, or cancel anytime.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Pills</h2>
+    <div class="tabs tabs-pills" data-tabs>
+      <div class="tabs-nav" role="tablist">
+        <button class="tab" role="tab" aria-selected="true" aria-controls="tab2-all">All</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="tab2-active">Active</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="tab2-draft">Draft</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="tab2-archive">Archive</button>
+      </div>
+      <div class="tab-panels" style="padding-top:var(--space-4)">
+        <div id="tab2-all"    class="tab-panel active" role="tabpanel"><p style="font-size:var(--text-sm);color:var(--color-text-muted)">Showing all 48 items across all statuses.</p></div>
+        <div id="tab2-active" class="tab-panel" role="tabpanel"><p style="font-size:var(--text-sm);color:var(--color-text-muted)">Showing 24 active items.</p></div>
+        <div id="tab2-draft"  class="tab-panel" role="tabpanel"><p style="font-size:var(--text-sm);color:var(--color-text-muted)">Showing 18 drafts awaiting review.</p></div>
+        <div id="tab2-archive" class="tab-panel" role="tabpanel"><p style="font-size:var(--text-sm);color:var(--color-text-muted)">Showing 6 archived items.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Vertical</h2>
+    <div class="tabs-vertical" data-tabs>
+      <div class="tabs-nav" role="tablist" aria-label="Settings sections">
+        <button class="tab" role="tab" aria-selected="true" aria-controls="vtab-general">General</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="vtab-security">Security</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="vtab-notif">Notifications</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="vtab-appearance">Appearance</button>
+      </div>
+      <div class="tab-panels">
+        <div id="vtab-general"    class="tab-panel active" role="tabpanel"><div class="tab-content-box"><h4 style="font-size:var(--text-sm);font-weight:var(--font-semibold);margin-bottom:var(--space-2)">General Settings</h4><p>Update your display name, email address, and language preferences here.</p></div></div>
+        <div id="vtab-security"   class="tab-panel" role="tabpanel"><div class="tab-content-box"><h4 style="font-size:var(--text-sm);font-weight:var(--font-semibold);margin-bottom:var(--space-2)">Security</h4><p>Manage your password, two-factor authentication, and active sessions.</p></div></div>
+        <div id="vtab-notif"      class="tab-panel" role="tabpanel"><div class="tab-content-box"><h4 style="font-size:var(--text-sm);font-weight:var(--font-semibold);margin-bottom:var(--space-2)">Notifications</h4><p>Choose when and how you receive notifications from the system.</p></div></div>
+        <div id="vtab-appearance" class="tab-panel" role="tabpanel"><div class="tab-content-box"><h4 style="font-size:var(--text-sm);font-weight:var(--font-semibold);margin-bottom:var(--space-2)">Appearance</h4><p>Switch between light and dark mode, adjust font size, and set your theme color.</p></div></div>
+      </div>
+    </div>
+  </section>
+</div>
+<script>
+  window.addEventListener('message',function(e){if(e.data&&e.data.type==='theme')document.documentElement.dataset.theme=e.data.value;});
+
+  document.querySelectorAll('[data-tabs]').forEach(function(container) {
+    var tabs   = container.querySelectorAll('[role="tab"]:not(:disabled)');
+    var panels = container.querySelectorAll('[role="tabpanel"]');
+
+    tabs.forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        tabs.forEach(function(t)   { t.setAttribute('aria-selected', 'false'); });
+        panels.forEach(function(p) { p.classList.remove('active'); });
+        tab.setAttribute('aria-selected', 'true');
+        var target = document.getElementById(tab.getAttribute('aria-controls'));
+        if (target) target.classList.add('active');
+      });
+    });
+  });
+</script>
+</body>
+</html>

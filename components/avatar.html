@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Avatar — Design System</title>
+  <link rel="stylesheet" href="../styles/variables.css">
+  <link rel="stylesheet" href="../styles/framework.css">
+  <script>(function(){try{var t=localStorage.getItem('ds-theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}}());</script>
+  <style>
+    .avatar {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      font-weight: var(--font-semibold);
+      font-size: var(--text-sm);
+      user-select: none;
+    }
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .avatar svg { flex-shrink: 0; }
+
+    /* Sizes */
+    .avatar-xs   { width: 24px;  height: 24px;  font-size: 10px; }
+    .avatar-sm   { width: 32px;  height: 32px;  font-size: var(--text-xs); }
+    .avatar-md   { width: 40px;  height: 40px;  font-size: var(--text-sm); }
+    .avatar-lg   { width: 52px;  height: 52px;  font-size: var(--text-base); }
+    .avatar-xl   { width: 64px;  height: 64px;  font-size: var(--text-lg); }
+    .avatar-2xl  { width: 80px;  height: 80px;  font-size: var(--text-xl); }
+
+    /* Color variants for initials */
+    .avatar-primary   { background: var(--color-primary-subtle); color: var(--color-primary); }
+    .avatar-secondary { background: var(--color-secondary-subtle); color: var(--color-secondary); }
+    .avatar-success   { background: var(--color-success-subtle); color: var(--color-success-fg); }
+    .avatar-warning   { background: var(--color-warning-subtle); color: var(--color-warning-fg); }
+    .avatar-error     { background: var(--color-error-subtle); color: var(--color-error-fg); }
+    .avatar-neutral   { background: var(--color-surface-overlay); color: var(--color-text-muted); }
+
+    /* Shape */
+    .avatar-square  { border-radius: var(--radius-lg); }
+    .avatar-rounded { border-radius: var(--radius-xl); }
+
+    /* Bordered */
+    .avatar-bordered {
+      ring: 2px solid var(--color-surface);
+      box-shadow: 0 0 0 2px var(--color-surface);
+    }
+
+    /* With status badge */
+    .avatar-wrap {
+      position: relative;
+      display: inline-flex;
+    }
+    .status-dot {
+      position: absolute;
+      bottom: 1px;
+      right: 1px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 2px solid var(--color-surface);
+    }
+    .status-online  { background: var(--color-success); }
+    .status-away    { background: var(--color-warning); }
+    .status-offline { background: var(--color-text-subtle); }
+    .status-busy    { background: var(--color-error); }
+
+    /* Avatar group / stack */
+    .avatar-group {
+      display: flex;
+    }
+    .avatar-group .avatar {
+      box-shadow: 0 0 0 2px var(--color-surface);
+    }
+    .avatar-group .avatar + .avatar {
+      margin-left: -10px;
+    }
+    .avatar-overflow {
+      background: var(--color-surface-overlay);
+      color: var(--color-text-muted);
+      border: 1px dashed var(--color-border-strong);
+    }
+
+    /* User row */
+    .user-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-3) 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .user-row:last-child { border-bottom: none; }
+    .user-name  { font-size: var(--text-sm); font-weight: var(--font-medium); color: var(--color-text); }
+    .user-email { font-size: var(--text-xs); color: var(--color-text-muted); }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="page-header">
+    <h1 class="page-title">Avatar</h1>
+    <p class="page-description">User avatars with image, initials, icons, status badges, and group stacking. Pure CSS.</p>
+  </div>
+
+  <section class="section">
+    <h2 class="section-title">Initials</h2>
+    <div class="demo-row center">
+      <div class="avatar avatar-md avatar-primary">JD</div>
+      <div class="avatar avatar-md avatar-secondary">AB</div>
+      <div class="avatar avatar-md avatar-success">SC</div>
+      <div class="avatar avatar-md avatar-warning">MR</div>
+      <div class="avatar avatar-md avatar-error">EK</div>
+      <div class="avatar avatar-md avatar-neutral">?</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Icon (Placeholder)</h2>
+    <div class="demo-row center">
+      <div class="avatar avatar-md avatar-neutral">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <div class="avatar avatar-lg avatar-primary">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <div class="avatar avatar-xl avatar-secondary">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Sizes</h2>
+    <div class="demo-row" style="align-items:flex-end">
+      <div style="text-align:center">
+        <div class="avatar avatar-xs avatar-primary" style="margin:0 auto var(--space-2)">JD</div>
+        <div class="demo-label">xs · 24</div>
+      </div>
+      <div style="text-align:center">
+        <div class="avatar avatar-sm avatar-primary" style="margin:0 auto var(--space-2)">JD</div>
+        <div class="demo-label">sm · 32</div>
+      </div>
+      <div style="text-align:center">
+        <div class="avatar avatar-md avatar-primary" style="margin:0 auto var(--space-2)">JD</div>
+        <div class="demo-label">md · 40</div>
+      </div>
+      <div style="text-align:center">
+        <div class="avatar avatar-lg avatar-primary" style="margin:0 auto var(--space-2)">JD</div>
+        <div class="demo-label">lg · 52</div>
+      </div>
+      <div style="text-align:center">
+        <div class="avatar avatar-xl avatar-primary" style="margin:0 auto var(--space-2)">JD</div>
+        <div class="demo-label">xl · 64</div>
+      </div>
+      <div style="text-align:center">
+        <div class="avatar avatar-2xl avatar-primary" style="margin:0 auto var(--space-2)">JD</div>
+        <div class="demo-label">2xl · 80</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Shapes</h2>
+    <div class="demo-row center">
+      <div>
+        <div class="avatar avatar-lg avatar-primary">JD</div>
+        <div class="demo-label" style="text-align:center;margin-top:var(--space-2)">Circle</div>
+      </div>
+      <div>
+        <div class="avatar avatar-lg avatar-secondary avatar-rounded">JD</div>
+        <div class="demo-label" style="text-align:center;margin-top:var(--space-2)">Rounded</div>
+      </div>
+      <div>
+        <div class="avatar avatar-lg avatar-success avatar-square">JD</div>
+        <div class="demo-label" style="text-align:center;margin-top:var(--space-2)">Square</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">With Status</h2>
+    <div class="demo-row center">
+      <div class="avatar-wrap">
+        <div class="avatar avatar-lg avatar-primary">JD</div>
+        <span class="status-dot status-online"></span>
+      </div>
+      <div class="avatar-wrap">
+        <div class="avatar avatar-lg avatar-secondary">AB</div>
+        <span class="status-dot status-away"></span>
+      </div>
+      <div class="avatar-wrap">
+        <div class="avatar avatar-lg avatar-success">SC</div>
+        <span class="status-dot status-busy"></span>
+      </div>
+      <div class="avatar-wrap">
+        <div class="avatar avatar-lg avatar-neutral">?</div>
+        <span class="status-dot status-offline"></span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Avatar Group (Stack)</h2>
+    <div class="avatar-group">
+      <div class="avatar avatar-md avatar-primary avatar-bordered">JD</div>
+      <div class="avatar avatar-md avatar-secondary avatar-bordered">AB</div>
+      <div class="avatar avatar-md avatar-success avatar-bordered">SC</div>
+      <div class="avatar avatar-md avatar-warning avatar-bordered">MR</div>
+      <div class="avatar avatar-md avatar-overflow">+4</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">User List</h2>
+    <div style="max-width:400px">
+      <div class="user-row">
+        <div class="avatar-wrap">
+          <div class="avatar avatar-md avatar-primary">JD</div>
+          <span class="status-dot status-online"></span>
+        </div>
+        <div style="flex:1">
+          <div class="user-name">Jane Doe</div>
+          <div class="user-email">jane@example.com</div>
+        </div>
+        <span style="font-size:var(--text-xs);color:var(--color-success)">Online</span>
+      </div>
+      <div class="user-row">
+        <div class="avatar-wrap">
+          <div class="avatar avatar-md avatar-secondary">AB</div>
+          <span class="status-dot status-away"></span>
+        </div>
+        <div style="flex:1">
+          <div class="user-name">Alex Brown</div>
+          <div class="user-email">alex@example.com</div>
+        </div>
+        <span style="font-size:var(--text-xs);color:var(--color-warning)">Away</span>
+      </div>
+      <div class="user-row">
+        <div class="avatar-wrap">
+          <div class="avatar avatar-md avatar-neutral">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <span class="status-dot status-offline"></span>
+        </div>
+        <div style="flex:1">
+          <div class="user-name">Sam Chen</div>
+          <div class="user-email">sam@example.com</div>
+        </div>
+        <span style="font-size:var(--text-xs);color:var(--color-text-subtle)">Offline</span>
+      </div>
+    </div>
+  </section>
+</div>
+<script>window.addEventListener('message',function(e){if(e.data&&e.data.type==='theme')document.documentElement.dataset.theme=e.data.value;});</script>
+</body>
+</html>

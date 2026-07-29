@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Card — Design System</title>
+  <link rel="stylesheet" href="../styles/variables.css">
+  <link rel="stylesheet" href="../styles/framework.css">
+  <script>(function(){try{var t=localStorage.getItem('ds-theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}}());</script>
+  <style>
+    .card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-2xl);
+      overflow: hidden;
+    }
+    .card-body   { padding: var(--space-5); }
+    .card-header {
+      padding: var(--space-4) var(--space-5);
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .card-footer {
+      padding: var(--space-4) var(--space-5);
+      border-top: 1px solid var(--color-border);
+      background: var(--color-surface-raised);
+    }
+    .card-title    { font-size: var(--text-base); font-weight: var(--font-semibold); color: var(--color-text); }
+    .card-subtitle { font-size: var(--text-sm); color: var(--color-text-muted); margin-top: var(--space-1); }
+    .card-text     { font-size: var(--text-sm); color: var(--color-text-muted); line-height: var(--leading-relaxed); }
+
+    .card-image { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
+    .card-image-placeholder {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: linear-gradient(135deg, var(--color-primary-subtle), var(--color-secondary-subtle));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-text-subtle);
+      font-size: var(--text-sm);
+    }
+
+    /* Interactive card */
+    .card-interactive {
+      cursor: pointer;
+      transition: transform var(--dur-200) ease, box-shadow var(--dur-200) ease;
+    }
+    .card-interactive:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Horizontal card */
+    .card-horizontal {
+      display: flex;
+      align-items: stretch;
+    }
+    .card-horizontal .card-media {
+      width: 140px;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, var(--color-primary-subtle), var(--color-secondary-subtle));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-primary);
+    }
+
+    /* Stats card */
+    .stat-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-2xl);
+      padding: var(--space-5);
+    }
+    .stat-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-xl);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--space-4);
+    }
+    .stat-value {
+      font-size: var(--text-3xl);
+      font-weight: var(--font-bold);
+      color: var(--color-text);
+      letter-spacing: var(--tracking-tight);
+      line-height: 1;
+    }
+    .stat-label { font-size: var(--text-sm); color: var(--color-text-muted); margin-top: var(--space-1); }
+    .stat-change {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      font-size: var(--text-xs);
+      font-weight: var(--font-medium);
+      margin-top: var(--space-3);
+      padding: var(--space-1) var(--space-2);
+      border-radius: var(--radius-full);
+    }
+    .stat-change.up   { background: var(--color-success-subtle); color: var(--color-success-fg); }
+    .stat-change.down { background: var(--color-error-subtle); color: var(--color-error-fg); }
+
+    .btn-sm {
+      display: inline-flex; align-items: center; gap: var(--space-1);
+      padding: var(--space-1) var(--space-3); height: var(--size-sm);
+      font-size: var(--text-xs); font-weight: var(--font-medium);
+      border-radius: var(--radius-md); border: 1px solid var(--color-border);
+      background: var(--color-surface); color: var(--color-text-muted);
+      cursor: pointer; transition: var(--transition-colors);
+    }
+    .btn-sm:hover { background: var(--color-surface-overlay); color: var(--color-text); }
+
+    .badge {
+      display: inline-flex; align-items: center;
+      padding: 2px var(--space-2); border-radius: var(--radius-full);
+      font-size: var(--text-xs); font-weight: var(--font-medium);
+    }
+    .badge-primary { background: var(--color-primary-subtle); color: var(--color-primary); }
+    .badge-success { background: var(--color-success-subtle); color: var(--color-success-fg); }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="page-header">
+    <h1 class="page-title">Card</h1>
+    <p class="page-description">Flexible card component with headers, footers, images, and interactive states. Pure CSS.</p>
+  </div>
+
+  <section class="section">
+    <h2 class="section-title">Basic Card</h2>
+    <div class="demo-grid">
+      <div class="card">
+        <div class="card-body">
+          <h3 class="card-title">Simple Card</h3>
+          <p class="card-text">A basic card with just a body section. Good for simple content that doesn't need a header or footer.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">With Header</h3>
+          <button class="btn-sm">Edit</button>
+        </div>
+        <div class="card-body">
+          <p class="card-text">This card has a header with a title and an action button alongside the content body.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">With Footer</h3>
+        </div>
+        <div class="card-body">
+          <p class="card-text">Includes a footer area that can hold actions or metadata.</p>
+        </div>
+        <div class="card-footer" style="display:flex;justify-content:flex-end;gap:var(--space-2)">
+          <button class="btn-sm">Cancel</button>
+          <button class="btn-sm" style="background:var(--color-primary);color:#fff;border-color:var(--color-primary)">Save</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">With Image</h2>
+    <div class="demo-grid">
+      <div class="card">
+        <div class="card-image-placeholder">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        </div>
+        <div class="card-body">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:var(--space-2)">
+            <h3 class="card-title">Blog Post Title</h3>
+            <span class="badge badge-primary">New</span>
+          </div>
+          <p class="card-text">A brief description of the article goes here. Keep it to two or three lines for readability.</p>
+          <div style="display:flex;align-items:center;gap:var(--space-3);margin-top:var(--space-4)">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--color-primary-subtle);display:flex;align-items:center;justify-content:center;font-size:var(--text-xs);font-weight:var(--font-bold);color:var(--color-primary)">JD</div>
+            <div>
+              <div style="font-size:var(--text-xs);font-weight:var(--font-medium);color:var(--color-text)">Jane Doe</div>
+              <div style="font-size:var(--text-xs);color:var(--color-text-subtle)">Jul 28, 2025</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-image-placeholder" style="background:linear-gradient(135deg,#fef3c7,#fde68a)">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--palette-yellow-700)" stroke-width="1.5"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+        </div>
+        <div class="card-body">
+          <div style="margin-bottom:var(--space-2)">
+            <span class="badge" style="background:var(--color-warning-subtle);color:var(--color-warning-fg)">Featured</span>
+          </div>
+          <h3 class="card-title">Featured Content</h3>
+          <p class="card-text">Cards adapt to any content type. Images, labels, text, and actions all compose naturally.</p>
+        </div>
+        <div class="card-footer">
+          <a href="#" style="font-size:var(--text-sm);color:var(--color-primary);font-weight:var(--font-medium)">Read more →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Horizontal Card</h2>
+    <div style="max-width:480px">
+      <div class="card card-horizontal">
+        <div class="card-media">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.7 13.5a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.61 3h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 10.91a16 16 0 0 0 5.5 5.5l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Customer Support</h3>
+          <p class="card-text" style="margin-top:var(--space-1)">Get help from our team 24/7 via chat, email, or phone.</p>
+          <a href="#" style="display:inline-flex;align-items:center;gap:4px;font-size:var(--text-xs);color:var(--color-primary);font-weight:var(--font-medium);margin-top:var(--space-3)">Contact us →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Stats Cards</h2>
+    <div class="demo-grid">
+      <div class="stat-card">
+        <div class="stat-icon" style="background:var(--color-primary-subtle);color:var(--color-primary)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="stat-value">12,847</div>
+        <div class="stat-label">Total users</div>
+        <div class="stat-change up">↑ 12% from last month</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:var(--color-success-subtle);color:var(--color-success)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <div class="stat-value">$48,294</div>
+        <div class="stat-label">Monthly revenue</div>
+        <div class="stat-change up">↑ 8.2% from last month</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:var(--color-error-subtle);color:var(--color-error)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <div class="stat-value">3.4%</div>
+        <div class="stat-label">Churn rate</div>
+        <div class="stat-change down">↑ 0.6% from last month</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Interactive Cards</h2>
+    <div class="demo-grid">
+      <div class="card card-interactive">
+        <div class="card-body">
+          <div class="stat-icon" style="background:var(--color-primary-subtle);color:var(--color-primary);margin-bottom:var(--space-3)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <h3 class="card-title">Dashboard</h3>
+          <p class="card-text" style="margin-top:4px">View your analytics and reports in one place.</p>
+        </div>
+      </div>
+      <div class="card card-interactive">
+        <div class="card-body">
+          <div class="stat-icon" style="background:var(--color-secondary-subtle);color:var(--color-secondary);margin-bottom:var(--space-3)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <h3 class="card-title">Messages</h3>
+          <p class="card-text" style="margin-top:4px">Communicate with your team in real time.</p>
+        </div>
+      </div>
+      <div class="card card-interactive">
+        <div class="card-body">
+          <div class="stat-icon" style="background:var(--color-success-subtle);color:var(--color-success);margin-bottom:var(--space-3)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <h3 class="card-title">Tasks</h3>
+          <p class="card-text" style="margin-top:4px">Track and manage your project tasks easily.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<script>window.addEventListener('message',function(e){if(e.data&&e.data.type==='theme')document.documentElement.dataset.theme=e.data.value;});</script>
+</body>
+</html>

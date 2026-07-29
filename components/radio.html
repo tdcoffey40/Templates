@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Radio — Design System</title>
+  <link rel="stylesheet" href="../styles/variables.css">
+  <link rel="stylesheet" href="../styles/framework.css">
+  <script>(function(){try{var t=localStorage.getItem('ds-theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}}());</script>
+  <style>
+    .radio-group { display: flex; flex-direction: column; gap: var(--space-3); }
+    .radio-row   { display: flex; gap: var(--space-4); flex-wrap: wrap; }
+
+    .radio-label {
+      display: inline-flex;
+      align-items: flex-start;
+      gap: var(--space-3);
+      cursor: pointer;
+      user-select: none;
+    }
+    .radio-label.disabled { opacity: 0.45; cursor: not-allowed; }
+
+    .radio {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--color-border-strong);
+      border-radius: 50%;
+      background: var(--color-surface);
+      cursor: pointer;
+      transition: border-color 150ms ease;
+      position: relative;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .radio:hover   { border-color: var(--color-primary); }
+    .radio:checked { border-color: var(--color-primary); }
+    .radio:checked::after {
+      content: '';
+      position: absolute;
+      inset: 3px;
+      border-radius: 50%;
+      background: var(--color-primary);
+    }
+    .radio:focus-visible {
+      outline: 2px solid var(--color-border-focus);
+      outline-offset: 2px;
+    }
+    .radio:disabled { cursor: not-allowed; }
+
+    .radio-text { font-size: var(--text-sm); color: var(--color-text); line-height: 1.4; }
+    .radio-hint { font-size: var(--text-xs); color: var(--color-text-muted); margin-top: 2px; }
+
+    /* Card variant */
+    .radio-card {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-4);
+      cursor: pointer;
+      transition: border-color 150ms ease, background 150ms ease;
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-3);
+    }
+    .radio-card:has(.radio:checked) {
+      border-color: var(--color-primary);
+      background: var(--color-primary-subtle);
+    }
+    .radio-card:hover:not(:has(.radio:checked)) { border-color: var(--color-primary); }
+
+    /* Segmented control style */
+    .radio-segment-group {
+      display: inline-flex;
+      background: var(--color-surface-overlay);
+      border-radius: var(--radius-xl);
+      padding: var(--space-1);
+      gap: var(--space-1);
+    }
+    .radio-segment input { position: absolute; opacity: 0; width: 0; height: 0; }
+    .radio-segment-label {
+      display: block;
+      padding: var(--space-1) var(--space-4);
+      border-radius: var(--radius-lg);
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+      color: var(--color-text-muted);
+      cursor: pointer;
+      transition: background 150ms ease, color 150ms ease;
+    }
+    .radio-segment input:checked + .radio-segment-label {
+      background: var(--color-surface);
+      color: var(--color-text);
+      box-shadow: var(--shadow-xs);
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="page-header">
+    <h1 class="page-title">Radio</h1>
+    <p class="page-description">Radio buttons and groups in default, card, and segmented control styles. Pure CSS — no JavaScript.</p>
+  </div>
+
+  <section class="section">
+    <h2 class="section-title">Basic Group</h2>
+    <div>
+      <p style="font-size:var(--text-sm);font-weight:var(--font-medium);color:var(--color-text);margin-bottom:var(--space-3)">Subscription plan</p>
+      <div class="radio-group">
+        <label class="radio-label">
+          <input type="radio" class="radio" name="plan" value="free">
+          <div>
+            <div class="radio-text">Free</div>
+            <div class="radio-hint">Up to 3 projects, 5GB storage</div>
+          </div>
+        </label>
+        <label class="radio-label">
+          <input type="radio" class="radio" name="plan" value="pro" checked>
+          <div>
+            <div class="radio-text">Pro — $12/mo</div>
+            <div class="radio-hint">Unlimited projects, 50GB storage, priority support</div>
+          </div>
+        </label>
+        <label class="radio-label">
+          <input type="radio" class="radio" name="plan" value="team">
+          <div>
+            <div class="radio-text">Team — $49/mo</div>
+            <div class="radio-hint">Everything in Pro plus team collaboration and audit logs</div>
+          </div>
+        </label>
+        <label class="radio-label disabled">
+          <input type="radio" class="radio" name="plan" value="enterprise" disabled>
+          <div>
+            <div class="radio-text">Enterprise</div>
+            <div class="radio-hint">Coming soon — contact sales</div>
+          </div>
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Inline</h2>
+    <div>
+      <p style="font-size:var(--text-sm);font-weight:var(--font-medium);color:var(--color-text);margin-bottom:var(--space-3)">Notification frequency</p>
+      <div class="radio-row">
+        <label class="radio-label"><input type="radio" class="radio" name="freq" checked> <span class="radio-text">Immediately</span></label>
+        <label class="radio-label"><input type="radio" class="radio" name="freq"> <span class="radio-text">Daily digest</span></label>
+        <label class="radio-label"><input type="radio" class="radio" name="freq"> <span class="radio-text">Weekly summary</span></label>
+        <label class="radio-label"><input type="radio" class="radio" name="freq"> <span class="radio-text">Never</span></label>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Card Style</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:var(--space-3)">
+      <label class="radio-card">
+        <input type="radio" class="radio" name="role" value="viewer">
+        <div>
+          <div style="font-size:var(--text-sm);font-weight:var(--font-semibold);color:var(--color-text)">Viewer</div>
+          <div style="font-size:var(--text-xs);color:var(--color-text-muted);margin-top:2px">Can view and comment</div>
+        </div>
+      </label>
+      <label class="radio-card">
+        <input type="radio" class="radio" name="role" value="editor" checked>
+        <div>
+          <div style="font-size:var(--text-sm);font-weight:var(--font-semibold);color:var(--color-text)">Editor</div>
+          <div style="font-size:var(--text-xs);color:var(--color-text-muted);margin-top:2px">Can edit content</div>
+        </div>
+      </label>
+      <label class="radio-card">
+        <input type="radio" class="radio" name="role" value="admin">
+        <div>
+          <div style="font-size:var(--text-sm);font-weight:var(--font-semibold);color:var(--color-text)">Admin</div>
+          <div style="font-size:var(--text-xs);color:var(--color-text-muted);margin-top:2px">Full access and settings</div>
+        </div>
+      </label>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Segmented Control</h2>
+    <div class="radio-segment-group">
+      <label class="radio-segment">
+        <input type="radio" name="view" value="list" checked>
+        <span class="radio-segment-label">List</span>
+      </label>
+      <label class="radio-segment">
+        <input type="radio" name="view" value="grid">
+        <span class="radio-segment-label">Grid</span>
+      </label>
+      <label class="radio-segment">
+        <input type="radio" name="view" value="board">
+        <span class="radio-segment-label">Board</span>
+      </label>
+    </div>
+
+    <div style="margin-top:var(--space-4)">
+      <div class="radio-segment-group">
+        <label class="radio-segment"><input type="radio" name="size" value="sm"> <span class="radio-segment-label">S</span></label>
+        <label class="radio-segment"><input type="radio" name="size" value="md" checked> <span class="radio-segment-label">M</span></label>
+        <label class="radio-segment"><input type="radio" name="size" value="lg"> <span class="radio-segment-label">L</span></label>
+        <label class="radio-segment"><input type="radio" name="size" value="xl"> <span class="radio-segment-label">XL</span></label>
+      </div>
+    </div>
+  </section>
+</div>
+<script>window.addEventListener('message',function(e){if(e.data&&e.data.type==='theme')document.documentElement.dataset.theme=e.data.value;});</script>
+</body>
+</html>

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dialog — Design System</title>
+  <link rel="stylesheet" href="../styles/variables.css">
+  <link rel="stylesheet" href="../styles/framework.css">
+  <script>(function(){try{var t=localStorage.getItem('ds-theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}}());</script>
+  <style>
+    /* Native <dialog> styling */
+    dialog {
+      position: fixed;
+      inset: 0;
+      margin: auto;
+      padding: 0;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-2xl);
+      box-shadow: var(--shadow-xl);
+      color: var(--color-text);
+      max-height: 90vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      /* Enter/exit animation */
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      transition:
+        opacity var(--dur-200) var(--ease-out),
+        transform var(--dur-200) var(--ease-out),
+        display var(--dur-200) allow-discrete,
+        overlay var(--dur-200) allow-discrete;
+    }
+    dialog::backdrop {
+      background: rgb(0 0 0 / 0.45);
+      backdrop-filter: blur(4px);
+      opacity: 1;
+      transition:
+        opacity var(--dur-200) var(--ease-out),
+        display var(--dur-200) allow-discrete,
+        overlay var(--dur-200) allow-discrete;
+    }
+    /* Exit state */
+    dialog:not([open]) {
+      display: none;
+      opacity: 0;
+      transform: scale(0.96) translateY(8px);
+      pointer-events: none;
+    }
+    dialog:not([open])::backdrop { opacity: 0; }
+    /* Enter state — @starting-style fires before first paint in [open] state */
+    @starting-style {
+      dialog[open]          { opacity: 0; transform: scale(0.96) translateY(8px); }
+      dialog[open]::backdrop { opacity: 0; }
+    }
+
+    /* Sizes */
+    .dialog-sm { width: min(380px, 95vw); }
+    .dialog-md { width: min(520px, 95vw); }
+    .dialog-lg { width: min(720px, 95vw); }
+
+    /* Dialog parts */
+    .dialog-header {
+      padding: var(--space-5) var(--space-6);
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .dialog-title {
+      font-size: var(--text-lg);
+      font-weight: var(--font-semibold);
+      color: var(--color-text);
+    }
+    .dialog-close {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--color-text-muted);
+      padding: var(--space-1);
+      border-radius: var(--radius-md);
+      display: flex;
+      transition: background 150ms, color 150ms;
+    }
+    .dialog-close:hover { background: var(--color-surface-overlay); color: var(--color-text); }
+
+    .dialog-body {
+      padding: var(--space-6);
+      overflow-y: auto;
+      flex: 1;
+    }
+    .dialog-body p {
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+      line-height: var(--leading-relaxed);
+    }
+
+    .dialog-footer {
+      padding: var(--space-4) var(--space-6);
+      border-top: 1px solid var(--color-border);
+      display: flex;
+      justify-content: flex-end;
+      gap: var(--space-3);
+      flex-shrink: 0;
+      background: var(--color-surface-raised);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; gap: var(--space-2);
+      padding: 0 var(--space-4); height: var(--size-md);
+      font-size: var(--text-sm); font-weight: var(--font-medium);
+      border-radius: var(--radius-lg); border: 1px solid transparent;
+      cursor: pointer; font-family: inherit; transition: var(--transition-colors);
+    }
+    .btn-outline { border-color: var(--color-border-strong); background: transparent; color: var(--color-text); }
+    .btn-outline:hover { background: var(--color-surface-overlay); }
+    .btn-primary { background: var(--color-primary); color: #fff; border-color: var(--color-primary); }
+    .btn-primary:hover { background: var(--color-primary-hover); }
+    .btn-danger  { background: var(--color-error); color: #fff; border-color: var(--color-error); }
+    .btn-danger:hover { background: var(--palette-red-600); }
+    .btn-sm { height: var(--size-sm); padding: 0 var(--space-3); font-size: var(--text-xs); }
+
+    /* Form field */
+    .field { display: flex; flex-direction: column; gap: var(--space-1); margin-bottom: var(--space-4); }
+    .field:last-child { margin-bottom: 0; }
+    .label { font-size: var(--text-sm); font-weight: var(--font-medium); }
+    .input {
+      height: var(--size-md); padding: 0 var(--space-3);
+      font-size: var(--text-sm); border-radius: var(--radius-lg);
+      border: 1px solid var(--color-border-strong); background: var(--color-surface);
+      color: var(--color-text); outline: none;
+      transition: border-color 150ms, box-shadow 150ms;
+    }
+    .input:focus { border-color: var(--color-border-focus); box-shadow: 0 0 0 3px rgb(99 102 241 / 0.15); }
+
+    /* Trigger area */
+    .trigger-area {
+      display: flex; flex-wrap: wrap; gap: var(--space-3);
+      padding: var(--space-8);
+      background: var(--color-surface-raised);
+      border: 2px dashed var(--color-border);
+      border-radius: var(--radius-2xl);
+      justify-content: center; align-items: center;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="page-header">
+    <h1 class="page-title">Dialog</h1>
+    <p class="page-description">Modal dialogs using the native HTML <code>&lt;dialog&gt;</code> element. JavaScript is required only for <code>showModal()</code> and <code>close()</code>.</p>
+  </div>
+
+  <section class="section">
+    <h2 class="section-title">Basic Dialog</h2>
+    <div class="trigger-area">
+      <button class="btn btn-outline" onclick="document.getElementById('dialog-basic').showModal()">Open Dialog</button>
+      <button class="btn btn-primary" onclick="document.getElementById('dialog-form').showModal()">Form Dialog</button>
+      <button class="btn btn-danger"  onclick="document.getElementById('dialog-confirm').showModal()">Confirm Dialog</button>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Sizes</h2>
+    <div class="trigger-area">
+      <button class="btn btn-outline" onclick="document.getElementById('dialog-sm').showModal()">Small</button>
+      <button class="btn btn-outline" onclick="document.getElementById('dialog-md').showModal()">Medium (default)</button>
+      <button class="btn btn-outline" onclick="document.getElementById('dialog-lg').showModal()">Large</button>
+    </div>
+  </section>
+</div>
+
+<!-- Basic Dialog -->
+<dialog id="dialog-basic" class="dialog-md">
+  <div class="dialog-header">
+    <span class="dialog-title">What is a Design System?</span>
+    <button class="dialog-close" aria-label="Close" onclick="this.closest('dialog').close()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="dialog-body">
+    <p>A design system is a collection of reusable components, patterns, and guidelines that teams use to build consistent products efficiently.</p>
+    <p style="margin-top:var(--space-4)">It serves as the single source of truth for design and development, reducing duplication and ensuring a cohesive user experience across all surfaces.</p>
+  </div>
+  <div class="dialog-footer">
+    <button class="btn btn-outline" onclick="this.closest('dialog').close()">Close</button>
+    <button class="btn btn-primary" onclick="this.closest('dialog').close()">Got it</button>
+  </div>
+</dialog>
+
+<!-- Form Dialog -->
+<dialog id="dialog-form" class="dialog-md">
+  <div class="dialog-header">
+    <span class="dialog-title">Create new project</span>
+    <button class="dialog-close" aria-label="Close" onclick="this.closest('dialog').close()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="dialog-body">
+    <div class="field">
+      <label class="label" for="proj-name">Project name</label>
+      <input class="input" id="proj-name" type="text" placeholder="My awesome project">
+    </div>
+    <div class="field">
+      <label class="label" for="proj-desc">Description</label>
+      <textarea class="input" id="proj-desc" rows="3" placeholder="Describe your project…" style="height:auto;padding:var(--space-2) var(--space-3)"></textarea>
+    </div>
+    <div class="field">
+      <label class="label" for="proj-type">Project type</label>
+      <select class="input" id="proj-type" style="appearance:none">
+        <option>Web application</option>
+        <option>Mobile app</option>
+        <option>API service</option>
+        <option>Design only</option>
+      </select>
+    </div>
+  </div>
+  <div class="dialog-footer">
+    <button class="btn btn-outline" onclick="this.closest('dialog').close()">Cancel</button>
+    <button class="btn btn-primary" onclick="this.closest('dialog').close()">Create project</button>
+  </div>
+</dialog>
+
+<!-- Confirm Dialog -->
+<dialog id="dialog-confirm" class="dialog-sm">
+  <div class="dialog-header">
+    <span class="dialog-title" style="color:var(--color-error)">Delete project?</span>
+    <button class="dialog-close" aria-label="Close" onclick="this.closest('dialog').close()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="dialog-body">
+    <p>This action cannot be undone. All files, settings, and data associated with <strong>My Project</strong> will be permanently deleted.</p>
+  </div>
+  <div class="dialog-footer">
+    <button class="btn btn-outline" onclick="this.closest('dialog').close()">Cancel</button>
+    <button class="btn btn-danger" onclick="this.closest('dialog').close()">Delete project</button>
+  </div>
+</dialog>
+
+<!-- Small Dialog -->
+<dialog id="dialog-sm" class="dialog-sm">
+  <div class="dialog-header">
+    <span class="dialog-title">Small dialog</span>
+    <button class="dialog-close" onclick="this.closest('dialog').close()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+  </div>
+  <div class="dialog-body"><p>A compact small dialog for quick prompts and short messages.</p></div>
+  <div class="dialog-footer"><button class="btn btn-outline" onclick="this.closest('dialog').close()">Close</button></div>
+</dialog>
+
+<!-- Medium Dialog -->
+<dialog id="dialog-md" class="dialog-md">
+  <div class="dialog-header">
+    <span class="dialog-title">Medium dialog</span>
+    <button class="dialog-close" onclick="this.closest('dialog').close()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+  </div>
+  <div class="dialog-body"><p>The standard medium dialog — great for forms, confirmations, and short content like this.</p></div>
+  <div class="dialog-footer"><button class="btn btn-outline" onclick="this.closest('dialog').close()">Close</button><button class="btn btn-primary" onclick="this.closest('dialog').close()">OK</button></div>
+</dialog>
+
+<!-- Large Dialog -->
+<dialog id="dialog-lg" class="dialog-lg">
+  <div class="dialog-header">
+    <span class="dialog-title">Large dialog</span>
+    <button class="dialog-close" onclick="this.closest('dialog').close()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+  </div>
+  <div class="dialog-body">
+    <p>A large dialog for displaying rich content, tables, or complex forms that need more horizontal space to present information clearly.</p>
+    <p style="margin-top:var(--space-4)">Use the large size sparingly — prefer smaller dialogs when the content allows.</p>
+  </div>
+  <div class="dialog-footer"><button class="btn btn-outline" onclick="this.closest('dialog').close()">Cancel</button><button class="btn btn-primary" onclick="this.closest('dialog').close()">Confirm</button></div>
+</dialog>
+
+<script>
+  window.addEventListener('message',function(e){if(e.data&&e.data.type==='theme')document.documentElement.dataset.theme=e.data.value;});
+  // Close on backdrop click
+  document.querySelectorAll('dialog').forEach(function(d) {
+    d.addEventListener('click', function(e) {
+      if (e.target === d) d.close();
+    });
+  });
+</script>
+</body>
+</html>

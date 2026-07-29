@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Select — Design System</title>
+  <link rel="stylesheet" href="../styles/variables.css">
+  <link rel="stylesheet" href="../styles/framework.css">
+  <script>(function(){try{var t=localStorage.getItem('ds-theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}}());</script>
+  <style>
+    .field { display: flex; flex-direction: column; gap: var(--space-1); }
+    .label { font-size: var(--text-sm); font-weight: var(--font-medium); color: var(--color-text); }
+    .hint  { font-size: var(--text-xs); color: var(--color-text-muted); }
+
+    .select-wrap {
+      position: relative;
+    }
+    .select-wrap::after {
+      content: '';
+      position: absolute;
+      right: var(--space-3);
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 5px solid var(--color-text-muted);
+      pointer-events: none;
+    }
+
+    .select {
+      width: 100%;
+      height: var(--size-md);
+      padding: 0 var(--space-8) 0 var(--space-3);
+      font-size: var(--text-sm);
+      color: var(--color-text);
+      background: var(--color-surface);
+      border: 1px solid var(--color-border-strong);
+      border-radius: var(--radius-lg);
+      appearance: none;
+      -webkit-appearance: none;
+      cursor: pointer;
+      outline: none;
+      transition: border-color 150ms ease, box-shadow 150ms ease;
+    }
+    .select:hover   { border-color: var(--color-primary); }
+    .select:focus   { border-color: var(--color-border-focus); box-shadow: 0 0 0 3px rgb(99 102 241 / 0.15); }
+    .select:disabled { background: var(--color-surface-overlay); color: var(--color-text-muted); cursor: not-allowed; border-color: var(--color-border); }
+
+    .select-sm { height: var(--size-sm); font-size: var(--text-xs); padding-left: var(--space-2); border-radius: var(--radius-md); }
+    .select-lg { height: var(--size-lg); font-size: var(--text-base); padding-left: var(--space-4); border-radius: var(--radius-xl); }
+
+    .multi-select {
+      width: 100%;
+      padding: var(--space-2) var(--space-3);
+      font-size: var(--text-sm);
+      color: var(--color-text);
+      background: var(--color-surface);
+      border: 1px solid var(--color-border-strong);
+      border-radius: var(--radius-lg);
+      outline: none;
+      transition: border-color 150ms ease, box-shadow 150ms ease;
+    }
+    .multi-select:focus { border-color: var(--color-border-focus); box-shadow: 0 0 0 3px rgb(99 102 241 / 0.15); }
+    .multi-select option { padding: var(--space-1); }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="page-header">
+    <h1 class="page-title">Select</h1>
+    <p class="page-description">Native select elements with custom CSS styling. No JavaScript required for basic functionality.</p>
+  </div>
+
+  <section class="section">
+    <h2 class="section-title">Basic</h2>
+    <div style="max-width:440px;display:flex;flex-direction:column;gap:var(--space-4)">
+      <div class="field">
+        <label class="label" for="country">Country</label>
+        <div class="select-wrap">
+          <select class="select" id="country">
+            <option value="">Select a country…</option>
+            <option value="us">United States</option>
+            <option value="gb">United Kingdom</option>
+            <option value="ca">Canada</option>
+            <option value="au">Australia</option>
+            <option value="de">Germany</option>
+            <option value="fr">France</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label class="label" for="timezone">Timezone</label>
+        <div class="select-wrap">
+          <select class="select" id="timezone">
+            <option>America/New_York (UTC-5)</option>
+            <option>America/Chicago (UTC-6)</option>
+            <option>America/Denver (UTC-7)</option>
+            <option selected>America/Los_Angeles (UTC-8)</option>
+            <option>Europe/London (UTC+0)</option>
+            <option>Europe/Paris (UTC+1)</option>
+          </select>
+        </div>
+        <span class="hint">Affects how times are displayed throughout the app.</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">With Option Groups</h2>
+    <div style="max-width:440px">
+      <div class="select-wrap">
+        <select class="select">
+          <option value="">Choose a framework…</option>
+          <optgroup label="JavaScript">
+            <option>React</option>
+            <option>Vue</option>
+            <option>Svelte</option>
+            <option>Angular</option>
+          </optgroup>
+          <optgroup label="CSS">
+            <option>Tailwind CSS</option>
+            <option>Bootstrap</option>
+            <option>Bulma</option>
+          </optgroup>
+          <optgroup label="Full Stack">
+            <option>Next.js</option>
+            <option>Nuxt</option>
+            <option>SvelteKit</option>
+          </optgroup>
+        </select>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Sizes</h2>
+    <div style="max-width:440px;display:flex;flex-direction:column;gap:var(--space-3)">
+      <div class="select-wrap">
+        <select class="select select-sm">
+          <option>Small select</option>
+        </select>
+      </div>
+      <div class="select-wrap">
+        <select class="select">
+          <option>Default select</option>
+        </select>
+      </div>
+      <div class="select-wrap">
+        <select class="select select-lg">
+          <option>Large select</option>
+        </select>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Multi-Select</h2>
+    <div style="max-width:440px">
+      <div class="field">
+        <label class="label">Interests</label>
+        <select class="multi-select" multiple size="5">
+          <option>Design Systems</option>
+          <option selected>CSS Architecture</option>
+          <option>Component Libraries</option>
+          <option selected>Accessibility</option>
+          <option>Performance</option>
+          <option>Animation</option>
+          <option>Typography</option>
+        </select>
+        <span class="hint">Hold Ctrl / Cmd to select multiple options.</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Disabled</h2>
+    <div style="max-width:440px">
+      <div class="select-wrap">
+        <select class="select" disabled>
+          <option>Disabled select</option>
+        </select>
+      </div>
+    </div>
+  </section>
+</div>
+<script>window.addEventListener('message',function(e){if(e.data&&e.data.type==='theme')document.documentElement.dataset.theme=e.data.value;});</script>
+</body>
+</html>

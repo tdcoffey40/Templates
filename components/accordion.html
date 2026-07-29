@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accordion — Design System</title>
+  <link rel="stylesheet" href="../styles/variables.css">
+  <link rel="stylesheet" href="../styles/framework.css">
+  <script>(function(){try{var t=localStorage.getItem('ds-theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}}());</script>
+  <style>
+    /* ============================================================
+       Accordion — native <details>/<summary> with CSS animation
+       CSS grid trick for smooth height animation.
+       Minimal JS only for the closing animation (CSS can't do it).
+       ============================================================ */
+    .accordion { border: 1px solid var(--color-border); border-radius: var(--radius-xl); overflow: hidden; }
+    .accordion + .accordion { margin-top: var(--space-2); }
+
+    /* Flush: all items share one border */
+    .accordion-flush { border: none; border-radius: 0; }
+    .accordion-flush .accordion-item { border-left: none; border-right: none; border-top: none; }
+    .accordion-flush .accordion-item:first-child { border-top: 1px solid var(--color-border); }
+
+    .accordion-item {
+      background: var(--color-surface);
+    }
+    .accordion-item + .accordion-item { border-top: 1px solid var(--color-border); }
+
+    .accordion-trigger {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: var(--space-4) var(--space-5);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: var(--text-sm);
+      font-weight: var(--font-semibold);
+      color: var(--color-text);
+      text-align: left;
+      font-family: inherit;
+      list-style: none;
+      gap: var(--space-3);
+      transition: background var(--dur-150);
+    }
+    .accordion-trigger::-webkit-details-marker { display: none; }
+    .accordion-trigger:hover { background: var(--color-surface-raised); }
+
+    .accordion-icon {
+      flex-shrink: 0;
+      color: var(--color-text-muted);
+      transition: transform var(--dur-300) var(--ease-in-out);
+    }
+    details[open] > .accordion-trigger > .accordion-icon,
+    details[open] > summary > .accordion-icon {
+      transform: rotate(180deg);
+    }
+
+    /* The grid animation trick — open */
+    .accordion-content {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows var(--dur-300) var(--ease-in-out);
+      background: var(--color-surface);
+    }
+    details[open]:not(.closing) > .accordion-content {
+      grid-template-rows: 1fr;
+    }
+
+    .accordion-body {
+      overflow: hidden;
+      padding: 0 var(--space-5) var(--space-4);
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+      line-height: var(--leading-relaxed);
+    }
+
+    /* Bordered variant (card style) */
+    .accordion-card .accordion-item {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+    }
+    .accordion-card .accordion-item + .accordion-item { border-top: 1px solid var(--color-border); margin-top: var(--space-2); }
+
+    /* Styled variant */
+    .accordion-filled .accordion-trigger { font-size: var(--text-base); padding: var(--space-5); }
+    .accordion-filled details[open] .accordion-trigger { background: var(--color-primary-subtle); color: var(--color-primary); }
+    .accordion-filled details[open] .accordion-icon { color: var(--color-primary); }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="page-header">
+    <h1 class="page-title">Accordion</h1>
+    <p class="page-description">Built on native <code>&lt;details&gt;</code>/<code>&lt;summary&gt;</code> with CSS grid animation. Minimal JS handles the closing animation only.</p>
+  </div>
+
+  <section class="section">
+    <h2 class="section-title">Default</h2>
+    <div>
+      <details class="accordion accordion-item">
+        <summary class="accordion-trigger">
+          What is a design system?
+          <svg class="accordion-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <div class="accordion-content">
+          <div class="accordion-body">A design system is a collection of reusable components, patterns, and guidelines that teams use to build consistent, scalable products. It serves as the single source of truth for design and development decisions across your organization.</div>
+        </div>
+      </details>
+      <details class="accordion accordion-item" style="margin-top:2px">
+        <summary class="accordion-trigger">
+          How do CSS custom properties work?
+          <svg class="accordion-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <div class="accordion-content">
+          <div class="accordion-body">CSS custom properties (variables) are defined with a <code>--</code> prefix in a selector, typically <code>:root</code>. They cascade like regular CSS properties and can be updated at runtime. Use them with <code>var(--property-name)</code>.</div>
+        </div>
+      </details>
+      <details class="accordion accordion-item" style="margin-top:2px">
+        <summary class="accordion-trigger">
+          Why use native HTML elements?
+          <svg class="accordion-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <div class="accordion-content">
+          <div class="accordion-body">Native HTML elements like <code>&lt;details&gt;</code>, <code>&lt;dialog&gt;</code>, and form inputs come with built-in accessibility, keyboard navigation, and browser behavior — for free. They reduce JavaScript dependency and improve performance.</div>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">FAQ Style (Grouped)</h2>
+    <div class="accordion">
+      <details class="accordion-item" open>
+        <summary class="accordion-trigger">
+          Is this design system free to use?
+          <svg class="accordion-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <div class="accordion-content">
+          <div class="accordion-body">Yes, this design system is open source and free to use in any project. You can customize the CSS variables to match your brand.</div>
+        </div>
+      </details>
+      <details class="accordion-item">
+        <summary class="accordion-trigger">
+          How do I customize the colors?
+          <svg class="accordion-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <div class="accordion-content">
+          <div class="accordion-body">Edit the <code>:root</code> block in <code>variables.css</code>. Change <code>--color-primary</code>, <code>--color-secondary</code>, and the surface colors to match your brand. Dark mode variables are in the <code>[data-theme="dark"]</code> block.</div>
+        </div>
+      </details>
+      <details class="accordion-item">
+        <summary class="accordion-trigger">
+          Does it support dark mode?
+          <svg class="accordion-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <div class="accordion-content">
+          <div class="accordion-body">Yes — toggle dark mode by setting <code>data-theme="dark"</code> on the <code>&lt;html&gt;</code> element. All semantic tokens automatically switch to their dark-mode counterparts defined in the variables file.</div>
+        </div>
+      </details>
+      <details class="accordion-item">
+        <summary class="accordion-trigger">
+          Can I use this with a JavaScript framework?
+          <svg class="accordion-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <div class="accordion-content">
+          <div class="accordion-body">Absolutely. The CSS variables and classes work with any framework — React, Vue, Svelte, Angular, or plain HTML. Import the CSS files and use the class names or variable tokens in your components.</div>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Filled / Highlighted Active</h2>
+    <div class="accordion accordion-filled">
+      <details class="accordion-item" open>
+        <summary class="accordion-trigger">
+          What is included in the Pro plan?
+          <svg class="accordion-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <div class="accordion-content">
+          <div class="accordion-body">Pro plan includes unlimited projects, 50GB of storage, priority support, and access to all advanced features including analytics and custom domains.</div>
+        </div>
+      </details>
+      <details class="accordion-item">
+        <summary class="accordion-trigger">
+          How do I cancel my subscription?
+          <svg class="accordion-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <div class="accordion-content">
+          <div class="accordion-body">Go to Settings → Billing → Cancel subscription. Your access remains until the end of the current billing period.</div>
+        </div>
+      </details>
+    </div>
+  </section>
+</div>
+<script>
+  window.addEventListener('message', function(e){ if(e.data&&e.data.type==='theme') document.documentElement.dataset.theme=e.data.value; });
+
+  // Closing animation — minimal JS for what CSS cannot do natively
+  document.querySelectorAll('details').forEach(function(details) {
+    var summary = details.querySelector('summary, .accordion-trigger');
+    if (!summary) return;
+    summary.addEventListener('click', function(e) {
+      if (!details.open) return;
+      e.preventDefault();
+      var content = details.querySelector('.accordion-content');
+      if (!content) return;
+      details.classList.add('closing');
+      content.addEventListener('transitionend', function() {
+        details.removeAttribute('open');
+        details.classList.remove('closing');
+      }, { once: true });
+    });
+  });
+</script>
+</body>
+</html>

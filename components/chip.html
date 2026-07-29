@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chip — Design System</title>
+  <link rel="stylesheet" href="../styles/variables.css">
+  <link rel="stylesheet" href="../styles/framework.css">
+  <script>(function(){try{var t=localStorage.getItem('ds-theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}}());</script>
+  <style>
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      padding: var(--space-1) var(--space-3);
+      border-radius: var(--radius-full);
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+      border: 1px solid var(--color-border);
+      background: var(--color-surface);
+      color: var(--color-text);
+      white-space: nowrap;
+      cursor: default;
+      transition: background 150ms ease, border-color 150ms ease;
+    }
+
+    .chip-interactive {
+      cursor: pointer;
+    }
+    .chip-interactive:hover {
+      background: var(--color-surface-overlay);
+    }
+
+    /* Checkbox chip (selectable via hidden checkbox) */
+    .chip-select-input { position: absolute; opacity: 0; width: 0; height: 0; }
+    .chip-select-label {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      padding: var(--space-1) var(--space-3);
+      border-radius: var(--radius-full);
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+      border: 1px solid var(--color-border-strong);
+      background: var(--color-surface);
+      color: var(--color-text-muted);
+      cursor: pointer;
+      transition: background 150ms ease, border-color 150ms ease, color 150ms ease;
+      user-select: none;
+    }
+    .chip-select-input:checked + .chip-select-label {
+      background: var(--color-primary-subtle);
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+    }
+    .chip-select-input:focus-visible + .chip-select-label {
+      outline: 2px solid var(--color-border-focus);
+      outline-offset: 2px;
+    }
+
+    /* Removable chip */
+    .chip-remove {
+      background: none;
+      border: none;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      color: currentColor;
+      opacity: 0.6;
+      margin-left: 2px;
+      border-radius: 50%;
+      transition: opacity 150ms;
+    }
+    .chip-remove:hover { opacity: 1; }
+
+    /* With avatar */
+    .chip-avatar {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      font-weight: var(--font-bold);
+      margin-left: calc(-1 * var(--space-1));
+    }
+
+    /* Variants */
+    .chip-primary   { background: var(--color-primary-subtle); border-color: var(--color-primary); color: var(--color-primary); }
+    .chip-secondary { background: var(--color-secondary-subtle); border-color: var(--color-secondary); color: var(--color-secondary); }
+    .chip-success   { background: var(--color-success-subtle); border-color: var(--color-success); color: var(--color-success-fg); }
+    .chip-warning   { background: var(--color-warning-subtle); border-color: var(--color-warning); color: var(--color-warning-fg); }
+    .chip-error     { background: var(--color-error-subtle); border-color: var(--color-error); color: var(--color-error-fg); }
+
+    .chip-group { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="page-header">
+    <h1 class="page-title">Chip</h1>
+    <p class="page-description">Compact tag-like elements for categories, filters, and selections. Removable and selectable variants — pure CSS.</p>
+  </div>
+
+  <section class="section">
+    <h2 class="section-title">Default</h2>
+    <div class="chip-group">
+      <span class="chip">Design</span>
+      <span class="chip">Engineering</span>
+      <span class="chip">Product</span>
+      <span class="chip">Marketing</span>
+      <span class="chip">Data</span>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Color Variants</h2>
+    <div class="chip-group">
+      <span class="chip chip-primary">Primary</span>
+      <span class="chip chip-secondary">Secondary</span>
+      <span class="chip chip-success">Success</span>
+      <span class="chip chip-warning">Warning</span>
+      <span class="chip chip-error">Error</span>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Removable Chips</h2>
+    <div class="chip-group" id="chip-container">
+      <span class="chip">React
+        <button class="chip-remove" aria-label="Remove React" onclick="this.closest('.chip').remove()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </span>
+      <span class="chip">TypeScript
+        <button class="chip-remove" aria-label="Remove TypeScript" onclick="this.closest('.chip').remove()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </span>
+      <span class="chip">Tailwind CSS
+        <button class="chip-remove" aria-label="Remove Tailwind" onclick="this.closest('.chip').remove()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </span>
+      <span class="chip chip-primary">Next.js
+        <button class="chip-remove" aria-label="Remove Next.js" onclick="this.closest('.chip').remove()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </span>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Selectable Chips (CSS-only)</h2>
+    <div class="chip-group">
+      <label>
+        <input type="checkbox" class="chip-select-input" name="tech" value="css">
+        <span class="chip-select-label">CSS</span>
+      </label>
+      <label>
+        <input type="checkbox" class="chip-select-input" name="tech" value="html" checked>
+        <span class="chip-select-label">HTML</span>
+      </label>
+      <label>
+        <input type="checkbox" class="chip-select-input" name="tech" value="js">
+        <span class="chip-select-label">JavaScript</span>
+      </label>
+      <label>
+        <input type="checkbox" class="chip-select-input" name="tech" value="ts" checked>
+        <span class="chip-select-label">TypeScript</span>
+      </label>
+      <label>
+        <input type="checkbox" class="chip-select-input" name="tech" value="react">
+        <span class="chip-select-label">React</span>
+      </label>
+      <label>
+        <input type="checkbox" class="chip-select-input" name="tech" value="vue">
+        <span class="chip-select-label">Vue</span>
+      </label>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">With Avatar</h2>
+    <div class="chip-group">
+      <span class="chip">
+        <span class="chip-avatar" style="background:var(--color-primary-subtle);color:var(--color-primary)">JD</span>
+        Jane Doe
+      </span>
+      <span class="chip">
+        <span class="chip-avatar" style="background:var(--color-secondary-subtle);color:var(--color-secondary)">AB</span>
+        Alex Brown
+        <button class="chip-remove" onclick="this.closest('.chip').remove()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </span>
+      <span class="chip">
+        <span class="chip-avatar" style="background:var(--color-success-subtle);color:var(--color-success-fg)">SC</span>
+        Sam Chen
+        <button class="chip-remove" onclick="this.closest('.chip').remove()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </span>
+    </div>
+  </section>
+</div>
+<script>window.addEventListener('message',function(e){if(e.data&&e.data.type==='theme')document.documentElement.dataset.theme=e.data.value;});</script>
+</body>
+</html>

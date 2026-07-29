@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkbox — Design System</title>
+  <link rel="stylesheet" href="../styles/variables.css">
+  <link rel="stylesheet" href="../styles/framework.css">
+  <script>(function(){try{var t=localStorage.getItem('ds-theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}}());</script>
+  <style>
+    .checkbox-field {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    .checkbox-label {
+      display: inline-flex;
+      align-items: flex-start;
+      gap: var(--space-3);
+      cursor: pointer;
+      user-select: none;
+    }
+    .checkbox-label.disabled { opacity: 0.45; cursor: not-allowed; }
+
+    /* Custom checkbox */
+    .checkbox {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--color-border-strong);
+      border-radius: var(--radius-base);
+      background: var(--color-surface);
+      cursor: pointer;
+      transition: background 150ms ease, border-color 150ms ease;
+      position: relative;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .checkbox:hover  { border-color: var(--color-primary); }
+    .checkbox:checked {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+    }
+    .checkbox:checked::after {
+      content: '';
+      position: absolute;
+      left: 3px;
+      top: 0;
+      width: 6px;
+      height: 10px;
+      border: 2px solid #fff;
+      border-top: none;
+      border-left: none;
+      transform: rotate(45deg);
+    }
+    .checkbox:indeterminate {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+    }
+    .checkbox:indeterminate::after {
+      content: '';
+      position: absolute;
+      left: 2px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 10px;
+      height: 2px;
+      background: #fff;
+      border-radius: 1px;
+    }
+    .checkbox:focus-visible {
+      outline: 2px solid var(--color-border-focus);
+      outline-offset: 2px;
+    }
+    .checkbox:disabled { cursor: not-allowed; }
+
+    .checkbox-text       { font-size: var(--text-sm); color: var(--color-text); line-height: 1.4; }
+    .checkbox-hint       { font-size: var(--text-xs); color: var(--color-text-muted); margin-top: 2px; }
+
+    /* Checkbox card variant */
+    .checkbox-card {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-4);
+      cursor: pointer;
+      transition: border-color 150ms ease, background 150ms ease;
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-3);
+    }
+    .checkbox-card:has(.checkbox:checked) {
+      border-color: var(--color-primary);
+      background: var(--color-primary-subtle);
+    }
+    .checkbox-card:hover { border-color: var(--color-primary); }
+
+    .checkbox-lg {
+      width: 22px;
+      height: 22px;
+      margin-top: 1px;
+    }
+    .checkbox-lg:checked::after {
+      left: 4px;
+      top: 1px;
+      width: 8px;
+      height: 12px;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="page-header">
+    <h1 class="page-title">Checkbox</h1>
+    <p class="page-description">Custom-styled checkboxes built with CSS <code>appearance: none</code>. Fully functional with pure CSS — no JavaScript.</p>
+  </div>
+
+  <section class="section">
+    <h2 class="section-title">Basic</h2>
+    <div class="checkbox-field">
+      <label class="checkbox-label">
+        <input type="checkbox" class="checkbox">
+        <span class="checkbox-text">Accept terms and conditions</span>
+      </label>
+      <label class="checkbox-label">
+        <input type="checkbox" class="checkbox" checked>
+        <span class="checkbox-text">Subscribe to newsletter</span>
+      </label>
+      <label class="checkbox-label">
+        <input type="checkbox" class="checkbox">
+        <div>
+          <div class="checkbox-text">Enable notifications</div>
+          <div class="checkbox-hint">We'll send you updates about your account and activity.</div>
+        </div>
+      </label>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">States</h2>
+    <div class="checkbox-field">
+      <label class="checkbox-label">
+        <input type="checkbox" class="checkbox">
+        <span class="checkbox-text">Unchecked</span>
+      </label>
+      <label class="checkbox-label">
+        <input type="checkbox" class="checkbox" checked>
+        <span class="checkbox-text">Checked</span>
+      </label>
+      <label class="checkbox-label">
+        <input type="checkbox" class="checkbox" id="indeterminate-demo">
+        <span class="checkbox-text">Indeterminate (select all)</span>
+      </label>
+      <label class="checkbox-label disabled">
+        <input type="checkbox" class="checkbox" disabled>
+        <span class="checkbox-text">Disabled unchecked</span>
+      </label>
+      <label class="checkbox-label disabled">
+        <input type="checkbox" class="checkbox" checked disabled>
+        <span class="checkbox-text">Disabled checked</span>
+      </label>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Checkbox Group</h2>
+    <div>
+      <p style="font-size:var(--text-sm);font-weight:var(--font-medium);color:var(--color-text);margin-bottom:var(--space-3)">Notification preferences</p>
+      <div class="checkbox-field">
+        <label class="checkbox-label">
+          <input type="checkbox" class="checkbox" checked>
+          <div>
+            <div class="checkbox-text">Email</div>
+            <div class="checkbox-hint">Receive updates via email</div>
+          </div>
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" class="checkbox" checked>
+          <div>
+            <div class="checkbox-text">Push notifications</div>
+            <div class="checkbox-hint">Alerts on your device</div>
+          </div>
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" class="checkbox">
+          <div>
+            <div class="checkbox-text">SMS</div>
+            <div class="checkbox-hint">Text message alerts</div>
+          </div>
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" class="checkbox">
+          <div>
+            <div class="checkbox-text">Slack</div>
+            <div class="checkbox-hint">Messages to your workspace</div>
+          </div>
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Card Style</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:var(--space-3)">
+      <label class="checkbox-card">
+        <input type="checkbox" class="checkbox checkbox-lg" checked>
+        <div>
+          <div style="font-size:var(--text-sm);font-weight:var(--font-semibold);color:var(--color-text)">Design</div>
+          <div style="font-size:var(--text-xs);color:var(--color-text-muted);margin-top:2px">UI/UX and visual design</div>
+        </div>
+      </label>
+      <label class="checkbox-card">
+        <input type="checkbox" class="checkbox checkbox-lg">
+        <div>
+          <div style="font-size:var(--text-sm);font-weight:var(--font-semibold);color:var(--color-text)">Engineering</div>
+          <div style="font-size:var(--text-xs);color:var(--color-text-muted);margin-top:2px">Frontend and backend</div>
+        </div>
+      </label>
+      <label class="checkbox-card">
+        <input type="checkbox" class="checkbox checkbox-lg" checked>
+        <div>
+          <div style="font-size:var(--text-sm);font-weight:var(--font-semibold);color:var(--color-text)">Product</div>
+          <div style="font-size:var(--text-xs);color:var(--color-text-muted);margin-top:2px">Strategy and roadmap</div>
+        </div>
+      </label>
+    </div>
+  </section>
+</div>
+<script>
+  window.addEventListener('message',function(e){if(e.data&&e.data.type==='theme')document.documentElement.dataset.theme=e.data.value;});
+  document.getElementById('indeterminate-demo').indeterminate = true;
+</script>
+</body>
+</html>

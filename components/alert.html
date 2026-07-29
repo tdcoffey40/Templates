@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alert — Design System</title>
+  <link rel="stylesheet" href="../styles/variables.css">
+  <link rel="stylesheet" href="../styles/framework.css">
+  <script>(function(){try{var t=localStorage.getItem('ds-theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}}());</script>
+  <style>
+    .alert {
+      display: flex;
+      gap: var(--space-3);
+      padding: var(--space-4);
+      border-radius: var(--radius-xl);
+      border: 1px solid;
+    }
+    .alert + .alert { margin-top: var(--space-3); }
+
+    .alert-success {
+      background: var(--color-success-subtle);
+      border-color: var(--color-success);
+      color: var(--color-success-fg);
+    }
+    .alert-warning {
+      background: var(--color-warning-subtle);
+      border-color: var(--color-warning);
+      color: var(--color-warning-fg);
+    }
+    .alert-error {
+      background: var(--color-error-subtle);
+      border-color: var(--color-error);
+      color: var(--color-error-fg);
+    }
+    .alert-info {
+      background: var(--color-info-subtle);
+      border-color: var(--color-info);
+      color: var(--color-info-fg);
+    }
+    .alert-primary {
+      background: var(--color-primary-subtle);
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+    }
+    .alert-neutral {
+      background: var(--color-surface-overlay);
+      border-color: var(--color-border-strong);
+      color: var(--color-text-muted);
+    }
+
+    .alert-icon { flex-shrink: 0; margin-top: 1px; }
+
+    .alert-body { flex: 1; min-width: 0; }
+    .alert-title {
+      font-size: var(--text-sm);
+      font-weight: var(--font-semibold);
+      margin-bottom: var(--space-1);
+    }
+    .alert-text {
+      font-size: var(--text-sm);
+      line-height: var(--leading-relaxed);
+      opacity: 0.9;
+    }
+
+    .alert-close {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: currentColor;
+      opacity: 0.6;
+      padding: 2px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      transition: opacity 150ms;
+      flex-shrink: 0;
+      align-self: flex-start;
+    }
+    .alert-close:hover { opacity: 1; }
+
+    /* Left border accent variant */
+    .alert-accent {
+      border: none;
+      border-left: 4px solid;
+      border-radius: var(--radius-md);
+    }
+    .alert-accent.alert-success { border-left-color: var(--color-success); }
+    .alert-accent.alert-warning { border-left-color: var(--color-warning); }
+    .alert-accent.alert-error   { border-left-color: var(--color-error); }
+    .alert-accent.alert-info    { border-left-color: var(--color-info); }
+
+    /* Inline/Banner variant */
+    .alert-banner {
+      border-radius: 0;
+      border-left: none;
+      border-right: none;
+      border-top: none;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="page-header">
+    <h1 class="page-title">Alert</h1>
+    <p class="page-description">Status alerts and banners with icons and optional dismiss. Pure CSS with inline JS for dismissal.</p>
+  </div>
+
+  <section class="section">
+    <h2 class="section-title">Variants</h2>
+    <div class="alert alert-info">
+      <span class="alert-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>
+      <div class="alert-body">
+        <p class="alert-text">Your account is currently in read-only mode due to a billing issue. Update your payment method to restore full access.</p>
+      </div>
+    </div>
+    <div class="alert alert-success">
+      <span class="alert-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>
+      <div class="alert-body">
+        <p class="alert-text">Your changes have been saved successfully and are now live.</p>
+      </div>
+    </div>
+    <div class="alert alert-warning">
+      <span class="alert-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+      <div class="alert-body">
+        <p class="alert-text">Your free plan is limited to 3 projects. Upgrade to Pro to unlock unlimited projects.</p>
+      </div>
+    </div>
+    <div class="alert alert-error">
+      <span class="alert-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></span>
+      <div class="alert-body">
+        <p class="alert-text">Failed to save your changes. Please check your connection and try again.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">With Title</h2>
+    <div class="alert alert-info">
+      <span class="alert-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>
+      <div class="alert-body">
+        <div class="alert-title">Scheduled maintenance</div>
+        <p class="alert-text">The system will be unavailable on Saturday, August 2 from 2–4 AM UTC for scheduled maintenance. Plan your work accordingly.</p>
+      </div>
+    </div>
+    <div class="alert alert-success" style="margin-top:var(--space-3)">
+      <span class="alert-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>
+      <div class="alert-body">
+        <div class="alert-title">Payment confirmed</div>
+        <p class="alert-text">Your subscription has been renewed and your account upgraded to Pro plan.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Dismissible</h2>
+    <div class="alert alert-warning" id="dismiss-warning">
+      <span class="alert-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+      <div class="alert-body">
+        <div class="alert-title">Storage almost full</div>
+        <p class="alert-text">You're using 8.2 GB of your 10 GB storage. Clean up old files or upgrade your plan.</p>
+      </div>
+      <button class="alert-close" aria-label="Dismiss" onclick="this.closest('.alert').style.display='none'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="alert alert-error" style="margin-top:var(--space-3)">
+      <span class="alert-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></span>
+      <div class="alert-body">
+        <p class="alert-text">Unable to connect to the server. Check your internet connection and try again.</p>
+      </div>
+      <button class="alert-close" aria-label="Dismiss" onclick="this.closest('.alert').style.display='none'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Left Accent</h2>
+    <div class="alert alert-accent alert-info">
+      <span class="alert-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>
+      <div class="alert-body"><p class="alert-text">Accent-style alerts use a colored left border for a more subtle presentation.</p></div>
+    </div>
+    <div class="alert alert-accent alert-success" style="margin-top:var(--space-3)">
+      <span class="alert-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+      <div class="alert-body"><p class="alert-text">Your profile has been updated successfully.</p></div>
+    </div>
+    <div class="alert alert-accent alert-warning" style="margin-top:var(--space-3)">
+      <span class="alert-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+      <div class="alert-body"><p class="alert-text">This action cannot be undone. Make sure to review before proceeding.</p></div>
+    </div>
+  </section>
+</div>
+<script>window.addEventListener('message',function(e){if(e.data&&e.data.type==='theme')document.documentElement.dataset.theme=e.data.value;});</script>
+</body>
+</html>
