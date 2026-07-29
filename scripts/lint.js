@@ -126,7 +126,10 @@ function ruleHardcodedColors(file, lines, out) {
 function ruleNoImportant(file, lines, out) {
   lines.forEach((raw, i) => {
     if (isIgnored(raw)) return;
-    if (raw.includes('!important') && !raw.includes('prefers-reduced-motion')) {
+    // Strip CSS/HTML comments before checking so the word !important
+    // in an explanatory comment does not trigger a false positive.
+    const stripped = raw.replace(/\/\*[\s\S]*?\*\//g, '').replace(/<!--[\s\S]*?-->/g, '');
+    if (stripped.includes('!important') && !stripped.includes('prefers-reduced-motion')) {
       out.push(warn(file, i + 1, 'no-important',
         '!important — refactor specificity instead'));
     }
