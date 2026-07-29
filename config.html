@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Theme Configurator — Design System</title>
+  <link rel="stylesheet" href="styles/variables.css">
+  <link rel="stylesheet" href="styles/framework.css">
+  <script>(function(){try{var t=localStorage.getItem('ds-theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}}());</script>
+  <style>
+    .configurator {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: var(--space-6);
+      align-items: start;
+    }
+
+    /* ---- Controls panel ---- */
+    .controls-panel {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-2xl);
+      padding: var(--space-5);
+      position: sticky;
+      top: var(--space-6);
+    }
+    .control-group { margin-bottom: var(--space-5); }
+    .control-group:last-child { margin-bottom: 0; }
+    .control-group-title {
+      font-size: 10px;
+      font-weight: var(--font-semibold);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-text-subtle);
+      margin-bottom: var(--space-3);
+    }
+    .control-divider {
+      height: 1px;
+      background: var(--color-border);
+      margin: var(--space-4) 0;
+    }
+
+    /* Color rows */
+    .color-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      margin-bottom: var(--space-2);
+    }
+    .color-row:last-child { margin-bottom: 0; }
+    .color-pick {
+      width: 30px; height: 30px;
+      border-radius: var(--radius-md);
+      border: 2px solid var(--color-border);
+      padding: 2px;
+      cursor: pointer;
+      flex-shrink: 0;
+      background: none;
+    }
+    .color-pick::-webkit-color-swatch-wrapper { padding: 0; }
+    .color-pick::-webkit-color-swatch { border: none; border-radius: 3px; }
+    .color-name {
+      font-size: var(--text-xs);
+      font-weight: var(--font-medium);
+      color: var(--color-text-muted);
+      min-width: 64px;
+    }
+    .color-hex {
+      flex: 1;
+      min-width: 0;          /* prevent flex overflow */
+      box-sizing: border-box;
+      height: 30px;
+      padding: 0 var(--space-2);
+      font-size: var(--text-xs);
+      font-family: var(--font-mono);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background: var(--color-surface);
+      color: var(--color-text);
+      outline: none;
+      transition: border-color 150ms;
+    }
+    .color-hex:focus { border-color: var(--color-border-focus); box-shadow: 0 0 0 3px rgb(99 102 241 / 0.12); }
+    .color-hex.invalid { border-color: var(--color-error); }
+
+    /* Font inputs */
+    .font-label {
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+      display: block;
+      margin-bottom: var(--space-1);
+      margin-top: var(--space-3);
+    }
+    .font-label:first-child { margin-top: 0; }
+    .text-input {
+      width: 100%;
+      height: 32px;
+      padding: 0 var(--space-3);
+      font-size: var(--text-xs);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      background: var(--color-surface);
+      color: var(--color-text);
+      outline: none;
+      box-sizing: border-box;
+      transition: border-color 150ms;
+    }
+    .text-input:focus { border-color: var(--color-border-focus); }
+    .font-fallback-hint {
+      font-size: 10px;
+      color: var(--color-text-subtle);
+      margin-top: 3px;
+      font-family: var(--font-mono);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Preset buttons */
+    .preset-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); }
+    .preset-btn {
+      padding: var(--space-2) var(--space-3);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      background: var(--color-surface);
+      color: var(--color-text-muted);
+      font-size: var(--text-xs);
+      font-family: inherit;
+      font-weight: var(--font-medium);
+      cursor: pointer;
+      transition: all 150ms;
+      text-align: center;
+    }
+    .preset-btn:hover { background: var(--color-surface-overlay); color: var(--color-text); }
+    .preset-btn.active {
+      background: var(--color-primary-subtle);
+      color: var(--color-primary);
+      border-color: var(--color-primary);
+    }
+
+    /* ---- Preview panel ---- */
+    .palette-row { margin-bottom: var(--space-4); }
+    .palette-row-label {
+      font-size: var(--text-xs);
+      font-weight: var(--font-semibold);
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-2);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .swatch-strip {
+      display: flex;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      gap: 1px;
+      background: var(--color-border);
+    }
+    .swatch {
+      flex: 1; height: 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: var(--space-1) var(--space-1);
+      transition: flex 200ms;
+    }
+    .swatch:hover { flex: 2; }
+    .swatch-num {
+      font-size: 9px;
+      font-weight: var(--font-bold);
+      opacity: 0.7;
+      line-height: 1;
+    }
+    .swatch-hex {
+      font-size: 8px;
+      opacity: 0.5;
+      font-family: var(--font-mono);
+      line-height: 1;
+      margin-top: 1px;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    /* Semantic tokens */
+    .token-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: var(--space-2);
+    }
+    .token-card {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--color-surface);
+    }
+    .token-swatch { height: 32px; }
+    .token-meta { padding: var(--space-2); }
+    .token-name {
+      font-size: 9px;
+      font-family: var(--font-mono);
+      color: var(--color-text-muted);
+      line-height: 1.3;
+    }
+    .token-val {
+      font-size: 9px;
+      font-family: var(--font-mono);
+      color: var(--color-text-subtle);
+      margin-top: 1px;
+    }
+
+    /* Component preview strip */
+    .comp-preview {
+      background: var(--color-surface-raised);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-2xl);
+      padding: var(--space-6);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-4);
+      align-items: center;
+    }
+
+    /* Export bar */
+    .export-bar {
+      display: flex;
+      gap: var(--space-3);
+      align-items: center;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-2xl);
+      padding: var(--space-4) var(--space-6);
+      margin-top: var(--space-6);
+    }
+    .export-info { flex: 1; }
+    .export-title {
+      font-size: var(--text-sm);
+      font-weight: var(--font-semibold);
+      color: var(--color-text);
+    }
+    .export-desc {
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+      margin-top: 2px;
+    }
+    .btn-export-json {
+      display: inline-flex; align-items: center; gap: var(--space-2);
+      padding: 0 var(--space-5); height: 40px;
+      background: var(--color-primary); color: #fff;
+      border: none; border-radius: var(--radius-lg);
+      font-size: var(--text-sm); font-weight: var(--font-semibold);
+      font-family: inherit; cursor: pointer;
+      transition: background 150ms;
+      white-space: nowrap;
+    }
+    .btn-export-json:hover { background: var(--color-primary-hover); }
+    .btn-export-css {
+      display: inline-flex; align-items: center; gap: var(--space-2);
+      padding: 0 var(--space-4); height: 40px;
+      background: transparent; color: var(--color-text);
+      border: 1px solid var(--color-border-strong); border-radius: var(--radius-lg);
+      font-size: var(--text-sm); font-weight: var(--font-medium);
+      font-family: inherit; cursor: pointer;
+      transition: background 150ms;
+      white-space: nowrap;
+    }
+    .btn-export-css:hover { background: var(--color-surface-overlay); }
+
+    /* Responsive collapse */
+    @media (max-width: 860px) {
+      .configurator { grid-template-columns: 1fr; }
+      .controls-panel { position: static; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="page-header">
+    <h1 class="page-title">Theme Configurator</h1>
+    <p class="page-description">Set your brand colors — full 50–900 scales are generated automatically. Download as JSON design tokens (Style Dictionary / W3C DTCG) or a ready-to-use <code>variables.css</code>.</p>
+  </div>
+
+  <div class="configurator">
+
+    <!-- ===== CONTROLS ===== -->
+    <aside class="controls-panel">
+
+      <div class="control-group">
+        <div class="control-group-title">Brand Colors</div>
+        <div class="color-row">
+          <input type="color" class="color-pick" id="pick-primary" value="#0ea5e9">
+          <span class="color-name">Primary</span>
+          <input type="text" class="color-hex" id="hex-primary" value="#0ea5e9" maxlength="7">
+        </div>
+        <div class="color-row">
+          <input type="color" class="color-pick" id="pick-secondary" value="#f97316">
+          <span class="color-name">Secondary</span>
+          <input type="text" class="color-hex" id="hex-secondary" value="#f97316" maxlength="7">
+        </div>
+        <div class="color-row">
+          <input type="color" class="color-pick" id="pick-neutral" value="#64748b">
+          <span class="color-name">Neutral</span>
+          <input type="text" class="color-hex" id="hex-neutral" value="#64748b" maxlength="7">
+        </div>
+      </div>
+
+      <div class="control-divider"></div>
+
+      <div class="control-group">
+        <div class="control-group-title">Typography</div>
+        <label class="font-label" for="font-heading">Headline font</label>
+        <input class="text-input" id="font-heading" type="text"
+          value="Inter"
+          list="heading-font-list">
+        <div class="font-fallback-hint" id="heading-fallback-hint">system-ui, sans-serif</div>
+        <datalist id="heading-font-list">
+          <option value="Inter">
+          <option value="Syne">
+          <option value="DM Serif Display">
+          <option value="Playfair Display">
+          <option value="Fraunces">
+          <option value="Clash Display">
+          <option value="Cabinet Grotesk">
+          <option value="Bricolage Grotesque">
+        </datalist>
+
+        <label class="font-label" for="font-body">Body font</label>
+        <input class="text-input" id="font-body" type="text"
+          value="Inter"
+          list="body-font-list">
+        <div class="font-fallback-hint" id="body-fallback-hint">system-ui, sans-serif</div>
+        <datalist id="body-font-list">
+          <option value="Inter">
+          <option value="DM Sans">
+          <option value="Geist">
+          <option value="Plus Jakarta Sans">
+          <option value="Instrument Sans">
+          <option value="Source Serif 4">
+          <option value="Nunito">
+          <option value="Lato">
+        </datalist>
+      </div>
+
+      <div class="control-divider"></div>
+
+      <div class="control-group">
+        <div class="control-group-title">Border Radius</div>
+        <div class="preset-grid" id="radius-group">
+          <button class="preset-btn" data-radius="sharp">Sharp</button>
+          <button class="preset-btn active" data-radius="default">Default</button>
+          <button class="preset-btn" data-radius="rounded">Rounded</button>
+          <button class="preset-btn" data-radius="pill">Pill</button>
+        </div>
+      </div>
+
+      <div class="control-divider"></div>
+
+      <div class="control-group">
+        <div class="control-group-title">Spacing Scale</div>
+        <div class="preset-grid" id="spacing-group">
+          <button class="preset-btn" data-spacing="compact">Compact</button>
+          <button class="preset-btn active" data-spacing="default">Default</button>
+          <button class="preset-btn" data-spacing="spacious">Spacious</button>
+          <button class="preset-btn" data-spacing="loose">Loose</button>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- ===== PREVIEW ===== -->
+    <div>
+
+      <section class="section">
+        <h2 class="section-title">Generated Palettes</h2>
+        <div id="palette-preview"></div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Semantic Tokens</h2>
+        <div class="token-grid" id="token-preview"></div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Component Preview</h2>
+        <div class="comp-preview" id="comp-preview"></div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- ===== EXPORT BAR ===== -->
+  <div class="export-bar">
+    <div class="export-info">
+      <div class="export-title">Export theme</div>
+      <div class="export-desc">JSON tokens use <code>$value</code>/<code>$type</code> (W3C DTCG / Style Dictionary v4). Palette refs use <code>{palette.primary.500}</code> notation.</div>
+    </div>
+    <button class="btn-export-css" id="btn-css">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      variables.css
+    </button>
+    <button class="btn-export-json" id="btn-json">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      tokens.json
+    </button>
+  </div>
+
+</div>
+
+<script>
+/* ============================================================
+   COLOR UTILITIES
+   ============================================================ */
+
+function hexToHsl(hex) {
+  hex = hex.replace(/^#/, '');
+  if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
+  const r = parseInt(hex.slice(0, 2), 16) / 255;
+  const g = parseInt(hex.slice(2, 4), 16) / 255;
+  const b = parseInt(hex.slice(4, 6), 16) / 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  let h = 0, s = 0, l = (max + min) / 2;
+  if (max !== min) {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    switch (max) {
+      case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+      case g: h = ((b - r) / d + 2) / 6; break;
+      case b: h = ((r - g) / d + 4) / 6; break;
+    }
+  }
+  return [h * 360, s * 100, l * 100];
+}
+
+function hslToHex(h, s, l) {
+  h = ((h % 360) + 360) % 360;
+  s = Math.min(100, Math.max(0, s));
+  l = Math.min(98, Math.max(2, l));
+  h /= 360; s /= 100; l /= 100;
+  let r, g, b;
+  if (s === 0) {
+    r = g = b = l;
+  } else {
+    const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+    const p = 2 * l - q;
+    const hue2rgb = (p, q, t) => {
+      if (t < 0) t += 1;
+      if (t > 1) t -= 1;
+      if (t < 1 / 6) return p + (q - p) * 6 * t;
+      if (t < 1 / 2) return q;
+      if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+      return p;
+    };
+    r = hue2rgb(p, q, h + 1 / 3);
+    g = hue2rgb(p, q, h);
+    b = hue2rgb(p, q, h - 1 / 3);
+  }
+  return '#' + [r, g, b].map(x => Math.round(x * 255).toString(16).padStart(2, '0')).join('');
+}
+
+/**
+ * Generate a full 50–900 color scale from a single "500-equivalent" hex.
+ * - Anchor: the input color is treated as the 500 shade.
+ * - Lighter stops (50–400): interpolate lightness toward 97%, reduce saturation.
+ * - Darker stops (600–900): interpolate toward a very dark shade, keep hue.
+ */
+function generateScale(hex) {
+  const [h, s, l] = hexToHsl(hex);
+  const lDark = Math.max(8, l * 0.17);
+  const stops = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900];
+  const scale = {};
+  stops.forEach(stop => {
+    let lightness, saturation;
+    if (stop <= 500) {
+      const t = (stop - 50) / (500 - 50);       // 0 at 50, 1 at 500
+      lightness  = 97 + (l - 97) * t;
+      saturation = s * (0.12 + 0.88 * t);        // very low sat at 50, full at 500
+    } else {
+      const t = (stop - 500) / 400;               // 0 at 500, 1 at 900
+      lightness  = l  + (lDark - l) * t;
+      saturation = s  * (1 - t * 0.3);
+    }
+    scale[stop] = hslToHex(h, saturation, lightness);
+  });
+  return scale;
+}
+
+/** Pick a legible text color (dark or light) against a background. */
+function readable(hex) {
+  const [, , l] = hexToHsl(hex);
+  return l > 52 ? '#1e293b' : '#ffffff';
+}
+
+function isValidHex(v) {
+  return /^#[0-9a-f]{6}$/i.test(v.trim());
+}
+
+/* ============================================================
+   STATE
+   ============================================================ */
+const state = {
+  primary:   '#0ea5e9',
+  secondary: '#f97316',
+  neutral:   '#64748b',
+  fontHeading: 'Inter',
+  fontBody:    'Inter',
+  radius:    'default',
+  spacing:   'default',
+};
+
+const RADIUS = {
+  sharp:   { none:'0',sm:'2px', md:'4px',  lg:'6px',  xl:'8px',  '2xl':'12px', '3xl':'16px', full:'9999px' },
+  default: { none:'0',sm:'4px', md:'8px',  lg:'10px', xl:'12px', '2xl':'16px', '3xl':'24px', full:'9999px' },
+  rounded: { none:'0',sm:'6px', md:'12px', lg:'16px', xl:'20px', '2xl':'28px', '3xl':'36px', full:'9999px' },
+  pill:    { none:'0',sm:'4px', md:'8px',  lg:'9999px',xl:'9999px','2xl':'9999px','3xl':'9999px',full:'9999px' },
+};
+
+const SPACING_FACTOR = { compact: 0.75, default: 1, spacious: 1.25, loose: 1.5 };
+
+// Base rem values for space-1 through space-24
+const BASE_SPACE = {
+  1:'0.25rem', 2:'0.5rem', 3:'0.75rem', 4:'1rem', 5:'1.25rem',
+  6:'1.5rem', 8:'2rem', 10:'2.5rem', 12:'3rem', 16:'4rem', 20:'5rem', 24:'6rem',
+};
+
+/* ============================================================
+   RENDER — Palettes
+   ============================================================ */
+function renderPalettes() {
+  const scales = {
+    Primary:   generateScale(state.primary),
+    Secondary: generateScale(state.secondary),
+    Neutral:   generateScale(state.neutral),
+  };
+  const stops = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900];
+
+  document.getElementById('palette-preview').innerHTML =
+    Object.entries(scales).map(([name, sc]) => `
+      <div class="palette-row">
+        <div class="palette-row-label">${name}</div>
+        <div class="swatch-strip">
+          ${stops.map(n => `
+            <div class="swatch" style="background:${sc[n]}" title="${sc[n]}">
+              <span class="swatch-num" style="color:${readable(sc[n])}">${n}</span>
+              <span class="swatch-hex" style="color:${readable(sc[n])}">${sc[n]}</span>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `).join('');
+}
+
+/* ============================================================
+   RENDER — Semantic Tokens
+   ============================================================ */
+function renderTokens() {
+  const p = generateScale(state.primary);
+  const s = generateScale(state.secondary);
+  const n = generateScale(state.neutral);
+
+  const tokens = [
+    { name: '--color-primary',          ref: 'primary.500',   hex: p[500] },
+    { name: '--color-primary-hover',    ref: 'primary.600',   hex: p[600] },
+    { name: '--color-primary-subtle',   ref: 'primary.50',    hex: p[50]  },
+    { name: '--color-secondary',        ref: 'secondary.500', hex: s[500] },
+    { name: '--color-secondary-subtle', ref: 'secondary.50',  hex: s[50]  },
+    { name: '--color-bg',               ref: 'neutral.50',    hex: n[50]  },
+    { name: '--color-surface-overlay',  ref: 'neutral.100',   hex: n[100] },
+    { name: '--color-border',           ref: 'neutral.200',   hex: n[200] },
+    { name: '--color-border-strong',    ref: 'neutral.300',   hex: n[300] },
+    { name: '--color-text',             ref: 'neutral.900',   hex: n[900] },
+    { name: '--color-text-muted',       ref: 'neutral.500',   hex: n[500] },
+    { name: '--color-text-subtle',      ref: 'neutral.400',   hex: n[400] },
+  ];
+
+  document.getElementById('token-preview').innerHTML = tokens.map(t => `
+    <div class="token-card">
+      <div class="token-swatch" style="background:${t.hex}"></div>
+      <div class="token-meta">
+        <div class="token-name">${t.name}</div>
+        <div class="token-val">{palette.${t.ref}}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ============================================================
+   RENDER — Component Preview (inline styles, no class deps)
+   ============================================================ */
+function renderComponents() {
+  const p   = generateScale(state.primary);
+  const s   = generateScale(state.secondary);
+  const n   = generateScale(state.neutral);
+  const rad = RADIUS[state.radius];
+  const spf = SPACING_FACTOR[state.spacing];
+  const ph  = Math.round(20 * spf);   // horizontal padding
+  const h   = Math.round(36 * spf);   // button/input height
+
+  const shared = `height:${h}px; font-size:14px; font-family:inherit; cursor:pointer; border:none; display:inline-flex; align-items:center;`;
+
+  document.getElementById('comp-preview').innerHTML = `
+    <button style="${shared} padding:0 ${ph}px; border-radius:${rad.lg}; background:${p[500]}; color:#fff; font-weight:600;">
+      Primary
+    </button>
+    <button style="${shared} padding:0 ${ph}px; border-radius:${rad.lg}; background:${s[500]}; color:#fff; font-weight:600;">
+      Secondary
+    </button>
+    <button style="${shared} padding:0 ${ph}px; border-radius:${rad.lg}; background:transparent; color:${n[700]}; border:1px solid ${n[300]}; font-weight:500;">
+      Outline
+    </button>
+    <input style="height:${h}px; padding:0 ${Math.round(12*spf)}px; border-radius:${rad.lg}; border:1px solid ${n[300]}; background:#fff; color:${n[900]}; font-size:14px; font-family:inherit; outline:none;" placeholder="Text input" type="text">
+    <span style="padding:3px 10px; border-radius:${rad.full}; background:${p[50]}; color:${p[700]}; font-size:12px; font-weight:600;">Badge</span>
+    <span style="padding:3px 10px; border-radius:${rad.full}; background:${s[50]}; color:${s[700]}; font-size:12px; font-weight:600;">Secondary</span>
+    <div style="padding:${Math.round(12*spf)}px ${ph}px; border-radius:${rad.xl}; border:1px solid ${n[200]}; background:#fff; font-size:13px; color:${n[600]}; min-width:200px;">
+      <strong style="color:${n[900]}; font-size:14px;">Card component</strong><br>
+      <span>Uses surface &amp; border tokens</span>
+    </div>
+  `;
+}
+
+function render() {
+  renderPalettes();
+  renderTokens();
+  renderComponents();
+}
+
+/* ============================================================
+   FONT STACK HELPERS
+   ============================================================ */
+
+// Serif display fonts — use Georgia fallback; everything else gets system-ui sans
+const SERIF_FONTS = ['playfair display','dm serif display','fraunces','lora','merriweather',
+  'source serif 4','eb garamond','cormorant garamond','libre baskerville'];
+const MONO_FONTS  = ['jetbrains mono','fira code','source code pro','ibm plex mono','roboto mono'];
+
+function buildFontFallback(name, type) {
+  const lower = name.toLowerCase();
+  if (MONO_FONTS.some(f => lower.includes(f)))  return 'Menlo, Consolas, monospace';
+  if (SERIF_FONTS.some(f => lower.includes(f))) return 'Georgia, "Times New Roman", serif';
+  return 'system-ui, -apple-system, sans-serif';
+}
+
+function buildFontStack(name, type) {
+  // If the user already typed a full stack (contains a comma), use it as-is
+  if (name.includes(',')) return name;
+  const fallback = buildFontFallback(name, type);
+  return `"${name}", ${fallback}`;
+}
+
+/* ============================================================
+   BUILD JSON TOKENS  (W3C DTCG / Style Dictionary v4 format)
+   ============================================================ */
+function buildTokens() {
+  const pri = generateScale(state.primary);
+  const sec = generateScale(state.secondary);
+  const neu = generateScale(state.neutral);
+  const rad = RADIUS[state.radius];
+  const spf = SPACING_FACTOR[state.spacing];
+
+  const toPaletteGroup = sc =>
+    Object.fromEntries(Object.entries(sc).map(([k, v]) => [k, { $value: v, $type: 'color' }]));
+
+  const scaleSpace = v => {
+    const n = parseFloat(v);
+    const scaled = (n * spf).toFixed(4).replace(/\.?0+$/, '');
+    return scaled + 'rem';
+  };
+
+  return {
+    palette: {
+      primary:   toPaletteGroup(pri),
+      secondary: toPaletteGroup(sec),
+      neutral:   toPaletteGroup(neu),
+    },
+    color: {
+      'primary':           { $value: '{palette.primary.500}',   $type: 'color', $description: 'Main brand color' },
+      'primary-hover':     { $value: '{palette.primary.600}',   $type: 'color' },
+      'primary-active':    { $value: '{palette.primary.700}',   $type: 'color' },
+      'primary-subtle':    { $value: '{palette.primary.50}',    $type: 'color' },
+      'secondary':         { $value: '{palette.secondary.500}', $type: 'color' },
+      'secondary-hover':   { $value: '{palette.secondary.600}', $type: 'color' },
+      'secondary-active':  { $value: '{palette.secondary.700}', $type: 'color' },
+      'secondary-subtle':  { $value: '{palette.secondary.50}',  $type: 'color' },
+      'bg':                { $value: '{palette.neutral.50}',    $type: 'color' },
+      'surface':           { $value: '#ffffff',                  $type: 'color' },
+      'surface-raised':    { $value: '{palette.neutral.50}',    $type: 'color' },
+      'surface-overlay':   { $value: '{palette.neutral.100}',   $type: 'color' },
+      'border':            { $value: '{palette.neutral.200}',   $type: 'color' },
+      'border-strong':     { $value: '{palette.neutral.300}',   $type: 'color' },
+      'border-focus':      { $value: '{palette.primary.400}',   $type: 'color' },
+      'text':              { $value: '{palette.neutral.900}',   $type: 'color' },
+      'text-muted':        { $value: '{palette.neutral.500}',   $type: 'color' },
+      'text-subtle':       { $value: '{palette.neutral.400}',   $type: 'color' },
+    },
+    typography: {
+      'font-heading': { $value: buildFontStack(state.fontHeading, 'heading'), $type: 'fontFamily', $description: 'Used for headings and display text' },
+      'font-body':    { $value: buildFontStack(state.fontBody,    'body'),    $type: 'fontFamily', $description: 'Used for body copy and UI text' },
+      'font-mono':    { $value: 'JetBrains Mono, Menlo, monospace',           $type: 'fontFamily' },
+      'size': {
+        'xs':   { $value: '0.75rem',  $type: 'dimension' },
+        'sm':   { $value: '0.875rem', $type: 'dimension' },
+        'base': { $value: '1rem',     $type: 'dimension' },
+        'lg':   { $value: '1.125rem', $type: 'dimension' },
+        'xl':   { $value: '1.25rem',  $type: 'dimension' },
+        '2xl':  { $value: '1.5rem',   $type: 'dimension' },
+        '3xl':  { $value: '1.875rem', $type: 'dimension' },
+        '4xl':  { $value: '2.25rem',  $type: 'dimension' },
+        '5xl':  { $value: '3rem',     $type: 'dimension' },
+      },
+    },
+    borderRadius: Object.fromEntries(
+      Object.entries(rad).map(([k, v]) => [k, { $value: v, $type: 'borderRadius' }])
+    ),
+    spacing: Object.fromEntries(
+      Object.entries(BASE_SPACE).map(([k, v]) => [k, { $value: scaleSpace(v), $type: 'spacing' }])
+    ),
+    shadow: {
+      xs:  { $value: '0 1px 2px 0 rgb(0 0 0 / 0.05)',                                                    $type: 'shadow' },
+      sm:  { $value: '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',                   $type: 'shadow' },
+      md:  { $value: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',                $type: 'shadow' },
+      lg:  { $value: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',              $type: 'shadow' },
+      xl:  { $value: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',             $type: 'shadow' },
+    },
+  };
+}
+
+/* ============================================================
+   BUILD CSS  (variables.css)
+   ============================================================ */
+function buildCSS() {
+  const pri = generateScale(state.primary);
+  const sec = generateScale(state.secondary);
+  const neu = generateScale(state.neutral);
+  const rad = RADIUS[state.radius];
+  const spf = SPACING_FACTOR[state.spacing];
+  const date = new Date().toISOString().split('T')[0];
+
+  const scaleSpace = v => {
+    const n = parseFloat(v);
+    return (n * spf).toFixed(4).replace(/\.?0+$/, '') + 'rem';
+  };
+
+  return [
+    `/* ==========================================================`,
+    `   Design System — CSS Custom Properties`,
+    `   Generated by Theme Configurator on ${date}`,
+    `   ========================================================== */`,
+    ``,
+    `:root {`,
+    `  /* ---- Primary Palette ---- */`,
+    ...Object.entries(pri).map(([k, v]) => `  --palette-primary-${k}: ${v};`),
+    ``,
+    `  /* ---- Secondary Palette ---- */`,
+    ...Object.entries(sec).map(([k, v]) => `  --palette-secondary-${k}: ${v};`),
+    ``,
+    `  /* ---- Neutral Palette ---- */`,
+    ...Object.entries(neu).map(([k, v]) => `  --palette-neutral-${k}: ${v};`),
+    ``,
+    `  /* ---- Semantic Color Tokens — Light ---- */`,
+    `  --color-primary:          var(--palette-primary-500);`,
+    `  --color-primary-hover:    var(--palette-primary-600);`,
+    `  --color-primary-active:   var(--palette-primary-700);`,
+    `  --color-primary-subtle:   var(--palette-primary-50);`,
+    `  --color-primary-fg:       #ffffff;`,
+    ``,
+    `  --color-secondary:        var(--palette-secondary-500);`,
+    `  --color-secondary-hover:  var(--palette-secondary-600);`,
+    `  --color-secondary-active: var(--palette-secondary-700);`,
+    `  --color-secondary-subtle: var(--palette-secondary-50);`,
+    `  --color-secondary-fg:     #ffffff;`,
+    ``,
+    `  --color-bg:               var(--palette-neutral-50);`,
+    `  --color-surface:          #ffffff;`,
+    `  --color-surface-raised:   var(--palette-neutral-50);`,
+    `  --color-surface-overlay:  var(--palette-neutral-100);`,
+    ``,
+    `  --color-border:           var(--palette-neutral-200);`,
+    `  --color-border-strong:    var(--palette-neutral-300);`,
+    `  --color-border-focus:     var(--palette-primary-400);`,
+    ``,
+    `  --color-text:             var(--palette-neutral-900);`,
+    `  --color-text-muted:       var(--palette-neutral-500);`,
+    `  --color-text-subtle:      var(--palette-neutral-400);`,
+    ``,
+    `  /* ---- Typography ---- */`,
+    `  --font-heading: ${buildFontStack(state.fontHeading, 'heading')};`,
+    `  --font-body:    ${buildFontStack(state.fontBody, 'body')};`,
+    `  --font-sans:    ${buildFontStack(state.fontBody, 'body')};  /* alias — same as body */`,
+    `  --font-mono:    JetBrains Mono, Menlo, monospace;`,
+    `  --text-xs:   0.75rem;`,
+    `  --text-sm:   0.875rem;`,
+    `  --text-base: 1rem;`,
+    `  --text-lg:   1.125rem;`,
+    `  --text-xl:   1.25rem;`,
+    `  --text-2xl:  1.5rem;`,
+    `  --text-3xl:  1.875rem;`,
+    `  --text-4xl:  2.25rem;`,
+    `  --text-5xl:  3rem;`,
+    `  --font-light:     300;`,
+    `  --font-normal:    400;`,
+    `  --font-medium:    500;`,
+    `  --font-semibold:  600;`,
+    `  --font-bold:      700;`,
+    `  --font-extrabold: 800;`,
+    ``,
+    `  /* ---- Border Radius ---- */`,
+    ...Object.entries(rad).map(([k, v]) => `  --radius-${k}: ${v};`),
+    ``,
+    `  /* ---- Spacing ---- */`,
+    ...Object.entries(BASE_SPACE).map(([k, v]) => `  --space-${k}: ${scaleSpace(v)};`),
+    ``,
+    `  /* ---- Shadows ---- */`,
+    `  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);`,
+    `  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);`,
+    `  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);`,
+    `  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);`,
+    `  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);`,
+    ``,
+    `  /* ---- Transitions ---- */`,
+    `  --dur-75:  75ms;`,
+    `  --dur-100: 100ms;`,
+    `  --dur-150: 150ms;`,
+    `  --dur-200: 200ms;`,
+    `  --dur-300: 300ms;`,
+    `  --dur-500: 500ms;`,
+    `  --ease-linear: linear;`,
+    `  --ease-in:     cubic-bezier(0.4, 0, 1, 1);`,
+    `  --ease-out:    cubic-bezier(0, 0, 0.2, 1);`,
+    `  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);`,
+    `  --transition-colors: color var(--dur-150) var(--ease-in-out),`,
+    `                        background-color var(--dur-150) var(--ease-in-out),`,
+    `                        border-color var(--dur-150) var(--ease-in-out);`,
+    ``,
+    `  /* ---- Z-index ---- */`,
+    `  --z-dropdown: 100;`,
+    `  --z-sticky:   200;`,
+    `  --z-modal:    400;`,
+    `  --z-tooltip:  600;`,
+    ``,
+    `  /* ---- Component sizes ---- */`,
+    `  --size-xs: 1.5rem;`,
+    `  --size-sm: 2rem;`,
+    `  --size-md: 2.5rem;`,
+    `  --size-lg: 3rem;`,
+    `  --size-xl: 3.5rem;`,
+    `}`,
+    ``,
+    `/* ---- Dark Mode ---- */`,
+    `[data-theme="dark"] {`,
+    `  --color-bg:               var(--palette-neutral-900);`,
+    `  --color-surface:          var(--palette-neutral-800);`,
+    `  --color-surface-raised:   var(--palette-neutral-900);`,
+    `  --color-surface-overlay:  var(--palette-neutral-700);`,
+    ``,
+    `  --color-border:           var(--palette-neutral-700);`,
+    `  --color-border-strong:    var(--palette-neutral-600);`,
+    `  --color-border-focus:     var(--palette-primary-400);`,
+    ``,
+    `  --color-text:             var(--palette-neutral-50);`,
+    `  --color-text-muted:       var(--palette-neutral-400);`,
+    `  --color-text-subtle:      var(--palette-neutral-600);`,
+    ``,
+    `  --color-primary-subtle:   var(--palette-primary-900);`,
+    `  --color-secondary-subtle: var(--palette-secondary-900);`,
+    `}`,
+  ].join('\n');
+}
+
+/* ============================================================
+   DOWNLOAD HELPERS
+   ============================================================ */
+function triggerDownload(filename, content, mime) {
+  const blob = new Blob([content], { type: mime });
+  const url  = URL.createObjectURL(blob);
+  const a    = Object.assign(document.createElement('a'), { href: url, download: filename });
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+document.getElementById('btn-json').addEventListener('click', () => {
+  triggerDownload('tokens.json', JSON.stringify(buildTokens(), null, 2), 'application/json');
+});
+document.getElementById('btn-css').addEventListener('click', () => {
+  triggerDownload('variables.css', buildCSS(), 'text/css');
+});
+
+/* ============================================================
+   CONTROL WIRING
+   ============================================================ */
+function wireColor(pickId, hexId, key) {
+  const pick = document.getElementById(pickId);
+  const hex  = document.getElementById(hexId);
+
+  pick.addEventListener('input', () => {
+    state[key] = pick.value;
+    hex.value  = pick.value;
+    hex.classList.remove('invalid');
+    render();
+  });
+
+  hex.addEventListener('input', () => {
+    const v = hex.value.trim();
+    if (isValidHex(v)) {
+      hex.classList.remove('invalid');
+      state[key] = v;
+      pick.value = v;
+      render();
+    } else {
+      hex.classList.add('invalid');
+    }
+  });
+}
+
+wireColor('pick-primary',   'hex-primary',   'primary');
+wireColor('pick-secondary', 'hex-secondary', 'secondary');
+wireColor('pick-neutral',   'hex-neutral',   'neutral');
+
+function wireFont(inputId, hintId, key, type) {
+  const input = document.getElementById(inputId);
+  const hint  = document.getElementById(hintId);
+  input.addEventListener('input', function() {
+    const val = this.value.trim();
+    if (val) {
+      state[key] = val;
+      hint.textContent = buildFontFallback(val, type);
+      render();
+    }
+  });
+}
+
+wireFont('font-heading', 'heading-fallback-hint', 'fontHeading', 'heading');
+wireFont('font-body',    'body-fallback-hint',    'fontBody',    'body');
+
+document.getElementById('radius-group').addEventListener('click', e => {
+  const btn = e.target.closest('[data-radius]');
+  if (!btn) return;
+  document.querySelectorAll('#radius-group .preset-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  state.radius = btn.dataset.radius;
+  render();
+});
+
+document.getElementById('spacing-group').addEventListener('click', e => {
+  const btn = e.target.closest('[data-spacing]');
+  if (!btn) return;
+  document.querySelectorAll('#spacing-group .preset-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  state.spacing = btn.dataset.spacing;
+  render();
+});
+
+// Theme bridge for iframe preview
+window.addEventListener('message', e => {
+  if (e.data && e.data.type === 'theme') document.documentElement.dataset.theme = e.data.value;
+});
+
+/* ============================================================
+   INIT
+   ============================================================ */
+render();
+</script>
+</body>
+</html>

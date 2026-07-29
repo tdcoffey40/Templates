@@ -154,14 +154,14 @@
     /* ---- Steps ---- */
     .steps {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
     }
     .step {
       display: flex;
+      flex-direction: column;
       align-items: center;
-      flex: 1;
+      flex-shrink: 0;
     }
-    .step:last-child { flex: none; }
     .step-dot {
       width: 32px; height: 32px;
       border-radius: 50%;
@@ -177,12 +177,12 @@
     .step-line {
       flex: 1; height: 2px;
       background: var(--color-border);
-      margin: 0 var(--space-2);
+      margin: 15px var(--space-2) 0; /* 15px = (32px dot / 2) - (2px line / 2) */
     }
     .step-line.done { background: var(--color-success); }
-    .step-info { text-align: center; }
-    .step-label { font-size: var(--text-xs); font-weight: var(--font-medium); color: var(--color-text-muted); margin-top: var(--space-2); }
-    .step-sublabel { font-size: 10px; color: var(--color-text-subtle); }
+    .step-info { text-align: center; margin-top: var(--space-2); }
+    .step-label { font-size: var(--text-xs); font-weight: var(--font-medium); color: var(--color-text-muted); }
+    .step-sublabel { font-size: 10px; color: var(--color-text-subtle); margin-top: 1px; }
   </style>
 </head>
 <body>
@@ -324,32 +324,40 @@
     <h2 class="section-title">Step Progress Indicator</h2>
     <div>
       <div class="steps">
-        <div class="step-info">
+        <div class="step">
           <div class="step-dot complete">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
           </div>
-          <div class="step-label">Account</div>
-          <div class="step-sublabel">Complete</div>
+          <div class="step-info">
+            <div class="step-label">Account</div>
+            <div class="step-sublabel">Complete</div>
+          </div>
         </div>
         <div class="step-line done"></div>
-        <div class="step-info">
+        <div class="step">
           <div class="step-dot complete">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
           </div>
-          <div class="step-label">Profile</div>
-          <div class="step-sublabel">Complete</div>
+          <div class="step-info">
+            <div class="step-label">Profile</div>
+            <div class="step-sublabel">Complete</div>
+          </div>
         </div>
         <div class="step-line done"></div>
-        <div class="step-info">
+        <div class="step">
           <div class="step-dot current">3</div>
-          <div class="step-label" style="color:var(--color-primary)">Payment</div>
-          <div class="step-sublabel">In progress</div>
+          <div class="step-info">
+            <div class="step-label" style="color:var(--color-primary)">Payment</div>
+            <div class="step-sublabel">In progress</div>
+          </div>
         </div>
         <div class="step-line"></div>
-        <div class="step-info">
+        <div class="step">
           <div class="step-dot">4</div>
-          <div class="step-label">Confirm</div>
-          <div class="step-sublabel">Pending</div>
+          <div class="step-info">
+            <div class="step-label">Confirm</div>
+            <div class="step-sublabel">Pending</div>
+          </div>
         </div>
       </div>
     </div>

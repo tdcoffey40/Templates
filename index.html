@@ -9,7 +9,7 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif; /* lint-ignore */
       background: var(--color-bg);
       color: var(--color-text);
       height: 100vh;
@@ -278,6 +278,14 @@
     <nav class="sidebar-nav" aria-label="Component navigation">
 
       <div class="nav-group">
+        <span class="nav-group-title">Tools</span>
+        <button class="nav-link" data-src="config.html" data-label="Theme Configurator" data-group="Tools">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="flex-shrink:0;opacity:0.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Theme Configurator
+        </button>
+      </div>
+
+      <div class="nav-group">
         <span class="nav-group-title">Foundation</span>
         <button class="nav-link" data-src="components/typography.html" data-label="Typography" data-group="Foundation">
           <span class="nav-dot"></span> Typography
@@ -309,6 +317,12 @@
         </button>
         <button class="nav-link" data-src="components/slider.html" data-label="Slider" data-group="Inputs">
           <span class="nav-dot"></span> Slider
+        </button>
+        <button class="nav-link" data-src="components/datepicker.html" data-label="Datepicker" data-group="Inputs">
+          <span class="nav-dot"></span> Datepicker
+        </button>
+        <button class="nav-link" data-src="components/calendar.html" data-label="Calendar" data-group="Inputs">
+          <span class="nav-dot"></span> Calendar
         </button>
       </div>
 

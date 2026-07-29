@@ -1,0 +1,8 @@
+{
+  "name": "design-system",
+  "version": "1.0.0",
+  "description": "Pure HTML/CSS/JS component design system",
+  "scripts": {
+    "lint": "node scripts/lint.js"
+  }
+}
